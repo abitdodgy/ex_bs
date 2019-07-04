@@ -1,6 +1,6 @@
 # BsForm
 
-**TODO: Add description**
+Build dynamic Phoenix HTML forms for Bootstrap 4.
 
 ## Installation
 

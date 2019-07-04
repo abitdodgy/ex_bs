@@ -22,8 +22,8 @@ defmodule BsForm.MixProject do
   defp deps do
     [
       {:phoenix_html, "~> 2.10"},
-      {:phoenix_ecto, "~> 4.0.0"},
-      {:ecto, "~> 3.1.7"}
+      {:phoenix_ecto, "~> 4.0.0", only: :test},
+      {:ecto, "~> 3.1.7", only: :test}
     ]
   end
 end
