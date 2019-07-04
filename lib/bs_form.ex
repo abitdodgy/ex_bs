@@ -29,7 +29,7 @@ defmodule BsForm do
   ## Options
 
     * `:label` - the text to use for the label. Defaults to field name.
-    * `:hint` - hint text placed under the input.
+    * `:help` - help text placed under the input.
     * `:type` - specifies the input type.
     * Other options are passed as HTML attributes.
 
@@ -40,13 +40,13 @@ defmodule BsForm do
 
   """
   def bs_input(form, field, opts \\ []) do
-    {hint, opts} = BsForm.Help.make(opts)
+    {help, opts} = BsForm.Help.make(opts)
     {label, opts} = BsForm.Label.make(form, field, opts)
 
     error = error_tag(form, field)
     input = make_input(form, field, opts)
 
-    html = Enum.reject([label, input, error, hint], &is_nil/1)
+    html = Enum.reject([label, input, error, help], &is_nil/1)
     Tag.content_tag(:div, html, class: form_group_class())
   end
 
