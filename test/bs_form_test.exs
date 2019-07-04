@@ -1,6 +1,5 @@
 defmodule BsFormTest do
   use ExUnit.Case
-  # doctest BsForm
 
   import BsForm, only: [bs_input: 2, bs_input: 3]
   import Phoenix.HTML, only: [safe_to_string: 1]
@@ -144,6 +143,41 @@ defmodule BsFormTest do
 
       input = bs_input(form, :age, type: :text_input)
       assert safe_to_string(input) == expected      
+    end
+
+    test "accepts custom input class", %{form: form} do
+      expected =
+        ~s(<div class=\"form-group\">) <>
+          ~s(<label for=\"dummy_name\">Name</label>) <>
+          ~s(<input class=\"my-class \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(</div>)
+
+      input = bs_input(form, :name, class: "my-class")
+      assert safe_to_string(input) == expected
+    end
+  end
+
+  describe "input when invalid" do
+    setup _context do
+      form =
+        %Dummy{}
+        |> Dummy.changeset(@dummy_attrs)
+        |> Map.put(:action, :update)
+        |> Phoenix.HTML.Form.form_for("/")
+
+      {:ok, form: form}
+    end
+
+    test "maintains input state class with a custom input class", %{form: form} do
+      expected =
+        ~s(<div class=\"form-group\">) <>
+          ~s(<label for=\"dummy_name\">Name</label>) <>
+          ~s(<input class=\"my-class is-invalid\" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<div class=\"invalid-feedback\">can&#39;t be blank</div>) <>
+          ~s(</div>)
+
+      input = bs_input(form, :name, class: "my-class")
+      assert safe_to_string(input) == expected
     end
   end
 

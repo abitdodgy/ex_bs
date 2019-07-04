@@ -34,9 +34,7 @@ defmodule BsForm do
   ## Examples
 
       iex> input f, :name
-
       iex> input f, :comments, using: :textarea
-
       iex> input f, :comments, using: :textarea, label: "Write Something"
 
   """
@@ -53,7 +51,14 @@ defmodule BsForm do
 
   defp make_input(form, field, opts) do
     {type, opts} = Keyword.pop(opts, :type, Form.input_type(form, field))
-    opts = [class: "#{input_class()} #{input_state_class(form, field)}"] ++ opts
+
+    opts =
+      [class: input_class()]
+      |> Keyword.merge(opts)
+      |> Keyword.update!(:class, fn current_value ->
+        "#{current_value} #{input_state_class(form, field)}"
+      end)
+
     apply(Form, type, [form, field, opts])
   end
 
