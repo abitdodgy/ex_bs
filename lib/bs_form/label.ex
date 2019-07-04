@@ -50,10 +50,12 @@ defmodule BsForm.Label do
   end
 
   defp required_field?(form, field) do
-    :required in Form.input_validations(form, field)
+    form
+    |> Form.input_validations(field)
+    |> Keyword.get(:required)
   end
 
   defp required_sigil do
-    config(:required_sigil, "(Required)")
+    config(:required_sigil, "*")
   end
 end
