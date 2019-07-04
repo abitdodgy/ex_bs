@@ -27,8 +27,9 @@ defmodule BsForm do
 
     * `:label` - the text to use for the label. Defaults to field name.
     * `:hint` - hint text placed under the input.
-    * `:using` - specifies the input type, otherwise it's inflected.
-    * Other options are passed as HTML attributes
+    * `:type` - specifies the input type. It must be a Phoenix.HTML.Form
+        type, otherwise it's inflected.
+    * Other options are passed as HTML attributes.
 
   ## Examples
 
@@ -46,7 +47,7 @@ defmodule BsForm do
     error = error_tag(form, field)
     input = make_input(form, field, opts)
 
-    html = Enum.reject([label, error, input, hint], &is_nil/1)
+    html = Enum.reject([label, input, error, hint], &is_nil/1)
     Tag.content_tag(:div, html, class: form_group_class())
   end
 
@@ -70,7 +71,12 @@ defmodule BsForm do
   end
 
   defp error_tag(form, field) do
-    translate_error_fn = config(:translate_error_function, fn msg -> msg end)
+    default_translate_fn =
+      fn {msg, _opts} ->
+        msg
+      end
+
+    translate_error_fn = config(:translate_error_function, default_translate_fn)
 
     Enum.map(Keyword.get_values(form.errors, field), fn error ->
       Tag.content_tag(:div, translate_error_fn.(error), class: error_message_class())

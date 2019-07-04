@@ -4,7 +4,7 @@ defmodule BsForm.Label do
 
   """
   import BsForm, only: [config: 2]
-  
+
   alias Phoenix.HTML.Form
 
   @doc """

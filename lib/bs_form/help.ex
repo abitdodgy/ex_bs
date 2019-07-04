@@ -4,7 +4,7 @@ defmodule BsForm.Help do
 
   """
   import BsForm, only: [config: 2]
-  
+
   alias Phoenix.HTML.Tag
 
   @form_help_class "form-text text-muted"
@@ -33,7 +33,7 @@ defmodule BsForm.Help do
   end
 
   defp build(opts) when is_list(opts) do
-    {help, opts} = Keyword.pop(opts, :help)
+    {help, opts} = Keyword.pop(opts, :text)
     Tag.content_tag(:small, help, opts)
   end
 
