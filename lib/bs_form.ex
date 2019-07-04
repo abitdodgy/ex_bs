@@ -13,29 +13,30 @@ defmodule BsForm do
   @form_group_class "form-group"
 
   @doc """
-  Builds a Boostrap 4 label, input, an errors and hint tag.
+  Builds a Boostrap 4 label, input, an errors and help text tags.
 
-  Accepts a `label` option with the following conditions:
+  Accepts a `label` option with the following values:
 
-      * Use `false` to generate an input without a label.
-      * Use `nil` to inflect the label from the field name.
-      * Use any text to customise the label text.
+      * `false` generates an input without a label.
+      * `nil` inflects the label from the field name.
+      * Use any text to customise the label.
 
-  The input type is inflected. Use the `type` option to customise the input type.
+  The input type is inflected. Use the `type` option to customise the
+  input type. Input types must correspond to Phoenix.HTML.Form input functions.
+
+  For example: `text_input`.
 
   ## Options
 
     * `:label` - the text to use for the label. Defaults to field name.
     * `:hint` - hint text placed under the input.
-    * `:type` - specifies the input type. It must be a Phoenix.HTML.Form
-        type, otherwise it's inflected.
+    * `:type` - specifies the input type.
     * Other options are passed as HTML attributes.
 
   ## Examples
 
       iex> input f, :name
-      iex> input f, :comments, using: :textarea
-      iex> input f, :comments, using: :textarea, label: "Write Something"
+      iex> input f, :comments, type: :textarea
 
   """
   def bs_input(form, field, opts \\ []) do
@@ -76,10 +77,9 @@ defmodule BsForm do
   end
 
   defp error_tag(form, field) do
-    default_translate_fn =
-      fn {msg, _opts} ->
-        msg
-      end
+    default_translate_fn = fn {msg, _opts} ->
+      msg
+    end
 
     translate_error_fn = config(:translate_error_function, default_translate_fn)
 

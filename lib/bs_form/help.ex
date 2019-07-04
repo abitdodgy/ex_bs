@@ -1,11 +1,8 @@
 defmodule BsForm.Help do
-  @moduledoc """
-  Handles form help text HTML generation.
-
-  """
-  import BsForm, only: [config: 2]
+  @moduledoc false
 
   alias Phoenix.HTML.Tag
+  import BsForm, only: [config: 2]
 
   @form_help_class "form-text text-muted"
 

@@ -20,10 +20,7 @@ defmodule BsFormTest do
     end
   end
 
-  @dummy_attrs %{
-    name: nil,
-    age: nil
-  }
+  @dummy_attrs %{name: nil, age: nil}
 
   describe "label" do
     setup _context do
@@ -31,6 +28,7 @@ defmodule BsFormTest do
         %Dummy{}
         |> Dummy.changeset(@dummy_attrs)
         |> Phoenix.HTML.Form.form_for("/")
+
       {:ok, form: form}
     end
 
@@ -86,7 +84,7 @@ defmodule BsFormTest do
 
       input = bs_input(form, :name, label: [for: "another"])
       assert safe_to_string(input) == expected
-    end    
+    end
   end
 
   describe "errors" do
@@ -109,7 +107,7 @@ defmodule BsFormTest do
           ~s(</div>)
 
       input = bs_input(form, :name)
-      assert safe_to_string(input) == expected      
+      assert safe_to_string(input) == expected
     end
   end
 
@@ -131,7 +129,7 @@ defmodule BsFormTest do
           ~s(</div>)
 
       input = bs_input(form, :age)
-      assert safe_to_string(input) == expected      
+      assert safe_to_string(input) == expected
     end
 
     test "accepts custom type", %{form: form} do
@@ -142,7 +140,7 @@ defmodule BsFormTest do
           ~s(</div>)
 
       input = bs_input(form, :age, type: :text_input)
-      assert safe_to_string(input) == expected      
+      assert safe_to_string(input) == expected
     end
 
     test "accepts custom input class", %{form: form} do
@@ -201,7 +199,7 @@ defmodule BsFormTest do
 
       input = bs_input(form, :name, help: "Help text")
       assert safe_to_string(input) == expected
-    end    
+    end
 
     test "accepts help options", %{form: form} do
       expected =
@@ -213,6 +211,6 @@ defmodule BsFormTest do
 
       input = bs_input(form, :name, help: [text: "Help", class: "my-class"])
       assert safe_to_string(input) == expected
-    end    
+    end
   end
 end

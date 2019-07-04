@@ -1,11 +1,8 @@
 defmodule BsForm.Label do
-  @moduledoc """
-  Handles form label generation.
-
-  """
-  import BsForm, only: [config: 2]
+  @moduledoc false
 
   alias Phoenix.HTML.Form
+  import BsForm, only: [config: 2]
 
   @doc """
   Returns `nil` if label option is set to `false`.
