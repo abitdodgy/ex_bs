@@ -1,7 +1,7 @@
 defmodule BsFormTest do
   use ExUnit.Case
 
-  import BsForm, only: [bs_input: 2, bs_input: 3]
+  import BsForm, only: [input: 2, input: 3, form_group: 1, form_group: 2]
   import Phoenix.HTML, only: [safe_to_string: 1]
 
   defmodule Dummy do
@@ -28,7 +28,17 @@ defmodule BsFormTest do
         %Dummy{}
         |> Dummy.changeset(@dummy_attrs)
         |> Phoenix.HTML.Form.form_for("/")
+
       {:ok, form: form}
+    end
+
+    test "foo", %{form: form} do
+      html =
+        form_group do
+          input(form, :name)
+        end
+
+      IO.inspect(html)
     end
 
     test "does not create label when label is false", %{form: form} do
@@ -37,7 +47,7 @@ defmodule BsFormTest do
           ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, label: false)
+      input = input(form, :name, label: false)
       assert safe_to_string(input) == expected
     end
 
@@ -48,7 +58,7 @@ defmodule BsFormTest do
           ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, label: nil)
+      input = input(form, :name, label: nil)
       assert safe_to_string(input) == expected
     end
 
@@ -59,7 +69,7 @@ defmodule BsFormTest do
           ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, label: "Custom")
+      input = input(form, :name, label: "Custom")
       assert safe_to_string(input) == expected
     end
 
@@ -70,7 +80,7 @@ defmodule BsFormTest do
           ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, label: [text: "Custom", for: "another", class: "foo"])
+      input = input(form, :name, label: [text: "Custom", for: "another", class: "foo"])
       assert safe_to_string(input) == expected
     end
 
@@ -81,9 +91,9 @@ defmodule BsFormTest do
           ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, label: [for: "another"])
+      input = input(form, :name, label: [for: "another"])
       assert safe_to_string(input) == expected
-    end    
+    end
   end
 
   describe "errors" do
@@ -105,8 +115,8 @@ defmodule BsFormTest do
           ~s(<div class=\"invalid-feedback\">can&#39;t be blank</div>) <>
           ~s(</div>)
 
-      input = bs_input(form, :name)
-      assert safe_to_string(input) == expected      
+      input = input(form, :name)
+      assert safe_to_string(input) == expected
     end
   end
 
@@ -127,8 +137,8 @@ defmodule BsFormTest do
           ~s(<input class=\"form-control \" id=\"dummy_age\" name=\"dummy[age]\" type=\"number\">) <>
           ~s(</div>)
 
-      input = bs_input(form, :age)
-      assert safe_to_string(input) == expected      
+      input = input(form, :age)
+      assert safe_to_string(input) == expected
     end
 
     test "accepts custom type", %{form: form} do
@@ -138,8 +148,8 @@ defmodule BsFormTest do
           ~s(<input class=\"form-control \" id=\"dummy_age\" name=\"dummy[age]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = bs_input(form, :age, type: :text_input)
-      assert safe_to_string(input) == expected      
+      input = input(form, :age, type: :text_input)
+      assert safe_to_string(input) == expected
     end
 
     test "accepts custom input class", %{form: form} do
@@ -149,7 +159,7 @@ defmodule BsFormTest do
           ~s(<input class=\"my-class \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, class: "my-class")
+      input = input(form, :name, class: "my-class")
       assert safe_to_string(input) == expected
     end
   end
@@ -173,7 +183,7 @@ defmodule BsFormTest do
           ~s(<div class=\"invalid-feedback\">can&#39;t be blank</div>) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, class: "my-class")
+      input = input(form, :name, class: "my-class")
       assert safe_to_string(input) == expected
     end
   end
@@ -196,9 +206,9 @@ defmodule BsFormTest do
           ~s(<small class=\"form-text text-muted\">Help text</small>) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, help: "Help text")
+      input = input(form, :name, help: "Help text")
       assert safe_to_string(input) == expected
-    end    
+    end
 
     test "accepts help options", %{form: form} do
       expected =
@@ -208,8 +218,8 @@ defmodule BsFormTest do
           ~s(<small class=\"my-class\">Help</small>) <>
           ~s(</div>)
 
-      input = bs_input(form, :name, help: [text: "Help", class: "my-class"])
+      input = input(form, :name, help: [text: "Help", class: "my-class"])
       assert safe_to_string(input) == expected
-    end    
+    end
   end
 end
