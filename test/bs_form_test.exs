@@ -1,14 +1,14 @@
 defmodule BsFormTest do
   use ExUnit.Case
 
-  import BsForm, only: [input: 2, input: 3, form_group: 1, form_group: 2]
+  import BsForm, only: [form_group: 2, form_group: 3]
   import Phoenix.HTML, only: [safe_to_string: 1]
 
-  defmodule Dummy do
+  defmodule User do
     use Ecto.Schema
     import Ecto.Changeset
 
-    schema "dummy" do
+    schema "user" do
       field(:name, :string)
       field(:age, :integer)
     end
@@ -20,78 +20,69 @@ defmodule BsFormTest do
     end
   end
 
-  @dummy_attrs %{name: nil, age: nil}
+  @user_attrs %{name: nil, age: nil}
 
   describe "label" do
     setup _context do
       form =
-        %Dummy{}
-        |> Dummy.changeset(@dummy_attrs)
+        %User{}
+        |> User.changeset(@user_attrs)
         |> Phoenix.HTML.Form.form_for("/")
 
       {:ok, form: form}
     end
 
-    test "foo", %{form: form} do
-      html =
-        form_group do
-          input(form, :name)
-        end
-
-      IO.inspect(html)
-    end
-
     test "does not create label when label is false", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = input(form, :name, label: false)
+      input = form_group(form, :name, label: false)
       assert safe_to_string(input) == expected
     end
 
-    test "uses field name as label when label is nil", %{form: form} do
+    test "inflects label from field name when option is omitted", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_name\">Name *</label>) <>
-          ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = input(form, :name, label: nil)
+      input = form_group(form, :name)
       assert safe_to_string(input) == expected
     end
 
     test "creates label with custom text when passed in", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_name\">Custom *</label>) <>
-          ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<label for=\"user_name\">Custom<span> *</span></label>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = input(form, :name, label: "Custom")
+      input = form_group(form, :name, label: "Custom")
       assert safe_to_string(input) == expected
     end
 
     test "accepts label options", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label class=\"foo\" for=\"another\">Custom *</label>) <>
-          ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<label class=\"foo\" for=\"another\">Custom<span> *</span></label>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = input(form, :name, label: [text: "Custom", for: "another", class: "foo"])
+      input = form_group(form, :name, label: [text: "Custom", for: "another", class: "foo"])
       assert safe_to_string(input) == expected
     end
 
     test "uses field name as label when label options are passed in without text", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"another\">Name *</label>) <>
-          ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<label for=\"another\">Name<span> *</span></label>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = input(form, :name, label: [for: "another"])
+      input = form_group(form, :name, label: [for: "another"])
       assert safe_to_string(input) == expected
     end
   end
@@ -99,8 +90,8 @@ defmodule BsFormTest do
   describe "errors" do
     setup _context do
       form =
-        %Dummy{}
-        |> Dummy.changeset(@dummy_attrs)
+        %User{}
+        |> User.changeset(@user_attrs)
         |> Map.put(:action, :update)
         |> Phoenix.HTML.Form.form_for("/")
 
@@ -110,12 +101,24 @@ defmodule BsFormTest do
     test "renders error when data is invalid", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_name\">Name *</label>) <>
-          ~s(<input class=\"form-control is-invalid\" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<input class=\"form-control is-invalid\" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(<div class=\"invalid-feedback\">can&#39;t be blank</div>) <>
           ~s(</div>)
 
-      input = input(form, :name)
+      input = form_group(form, :name)
+      assert safe_to_string(input) == expected
+    end
+
+    test "maintains input state class with a custom input class", %{form: form} do
+      expected =
+        ~s(<div class=\"form-group\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<input class=\"my-class is-invalid\" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
+          ~s(<div class=\"invalid-feedback\">can&#39;t be blank</div>) <>
+          ~s(</div>)
+
+      input = form_group(form, :name, class: "my-class")
       assert safe_to_string(input) == expected
     end
   end
@@ -123,8 +126,8 @@ defmodule BsFormTest do
   describe "input" do
     setup _context do
       form =
-        %Dummy{}
-        |> Dummy.changeset(@dummy_attrs)
+        %User{}
+        |> User.changeset(@user_attrs)
         |> Phoenix.HTML.Form.form_for("/")
 
       {:ok, form: form}
@@ -133,57 +136,33 @@ defmodule BsFormTest do
     test "inflects input type", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_age\">Age</label>) <>
-          ~s(<input class=\"form-control \" id=\"dummy_age\" name=\"dummy[age]\" type=\"number\">) <>
+          ~s(<label for=\"user_age\">Age</label>) <>
+          ~s(<input class=\"form-control \" id=\"user_age\" name=\"user[age]\" type=\"number\">) <>
           ~s(</div>)
 
-      input = input(form, :age)
+      input = form_group(form, :age)
       assert safe_to_string(input) == expected
     end
 
     test "accepts custom type", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_age\">Age</label>) <>
-          ~s(<input class=\"form-control \" id=\"dummy_age\" name=\"dummy[age]\" type=\"text\">) <>
+          ~s(<label for=\"user_age\">Age</label>) <>
+          ~s(<input class=\"form-control \" id=\"user_age\" name=\"user[age]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = input(form, :age, type: :text_input)
+      input = form_group(form, :age, type: :text_input)
       assert safe_to_string(input) == expected
     end
 
     test "accepts custom input class", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_name\">Name *</label>) <>
-          ~s(<input class=\"my-class \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<input class=\"my-class \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(</div>)
 
-      input = input(form, :name, class: "my-class")
-      assert safe_to_string(input) == expected
-    end
-  end
-
-  describe "input when invalid" do
-    setup _context do
-      form =
-        %Dummy{}
-        |> Dummy.changeset(@dummy_attrs)
-        |> Map.put(:action, :update)
-        |> Phoenix.HTML.Form.form_for("/")
-
-      {:ok, form: form}
-    end
-
-    test "maintains input state class with a custom input class", %{form: form} do
-      expected =
-        ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_name\">Name *</label>) <>
-          ~s(<input class=\"my-class is-invalid\" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
-          ~s(<div class=\"invalid-feedback\">can&#39;t be blank</div>) <>
-          ~s(</div>)
-
-      input = input(form, :name, class: "my-class")
+      input = form_group(form, :name, class: "my-class")
       assert safe_to_string(input) == expected
     end
   end
@@ -191,8 +170,8 @@ defmodule BsFormTest do
   describe "help" do
     setup _context do
       form =
-        %Dummy{}
-        |> Dummy.changeset(@dummy_attrs)
+        %User{}
+        |> User.changeset(@user_attrs)
         |> Phoenix.HTML.Form.form_for("/")
 
       {:ok, form: form}
@@ -201,25 +180,43 @@ defmodule BsFormTest do
     test "accepts help text", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_name\">Name *</label>) <>
-          ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(<small class=\"form-text text-muted\">Help text</small>) <>
           ~s(</div>)
 
-      input = input(form, :name, help: "Help text")
+      input = form_group(form, :name, help: "Help text")
       assert safe_to_string(input) == expected
     end
 
     test "accepts help options", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
-          ~s(<label for=\"dummy_name\">Name *</label>) <>
-          ~s(<input class=\"form-control \" id=\"dummy_name\" name=\"dummy[name]\" type=\"text\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
           ~s(<small class=\"my-class\">Help</small>) <>
           ~s(</div>)
 
-      input = input(form, :name, help: [text: "Help", class: "my-class"])
+      input = form_group(form, :name, help: [text: "Help", class: "my-class"])
       assert safe_to_string(input) == expected
+    end
+
+    test "accepts custom help tag", %{form: form} do
+      expected =
+        ~s(<div class=\"form-group\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
+          ~s(<div class=\"form-text text-muted\">Help</div>) <>
+          ~s(</div>)
+
+      input = form_group(form, :name, help: [text: "Help", tag: :div])
+      assert safe_to_string(input) == expected
+    end
+
+    test "raises error if `text` is omitted from options", %{form: form} do
+      assert_raise KeyError, fn ->
+        form_group(form, :name, help: [class: "custom"])
+      end
     end
   end
 end

@@ -7,6 +7,7 @@ defmodule BsForm do
     * `translation_function` function used for translation. Returns the text by default.
     * `help_text_tag` tag used to generate help text. Defaults to `small`.
     * `required_field_mark` marker used to denote a required field.
+    * `css_classes` a map of CSS classes that consists of ...
 
   """
 
@@ -133,8 +134,6 @@ defmodule BsForm do
 
   """
   def form_group(form, field, opts \\ []) do
-    opts = Keyword.merge([class: css_class(:form_group)], opts)
-
     io_data =
       %{form: form, field: field, opts: opts, safe: []}
       |> put_hints()
@@ -143,7 +142,7 @@ defmodule BsForm do
       |> put_label()
       |> Map.get(:safe)
 
-    Tag.content_tag(:div, io_data, opts)
+    Tag.content_tag(:div, io_data, [class: css_class(:form_group)])
   end
 
   defp put_label(%{form: form, field: field, opts: opts, safe: safe} = data) do
@@ -253,13 +252,18 @@ defmodule BsForm do
   defp draw_help(false), do: []
 
   defp draw_help(text) when is_binary(text) do
-    Tag.content_tag(:small, text, class: css_class(:form_help))
+    Tag.content_tag(:small, text, class: css_class(:form_text))
   end
 
   defp draw_help(opts) when is_list(opts) do
-    {tag, opts} = Keyword.pop(opts, :tag, config(:help_text_tag, :small))
     {txt, opts} = Keyword.pop(opts, :text)
-    Tag.content_tag(tag, txt, opts)
+
+    if not is_binary(txt) do
+      raise KeyError, "`help` options must include a `text` option"
+    end
+
+    {tag, opts} = Keyword.pop(opts, :tag, config(:help_text_tag, :small))
+    Tag.content_tag(tag, txt, Keyword.merge([class: css_class(:form_text)], opts))
   end
 
   defp translation_fn do
@@ -276,7 +280,7 @@ defmodule BsForm do
 
   @bootstrap_classes %{
     error_message: "invalid-feedback",
-    form_help: "form-text text-muted",
+    form_text: "form-text text-muted",
     form_group: "form-group",
     input: "form-control",
     input_state_valid: "is-valid",
