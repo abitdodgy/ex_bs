@@ -165,6 +165,57 @@ defmodule BsFormTest do
       input = form_group(form, :name, class: "my-class")
       assert safe_to_string(input) == expected
     end
+
+    test "accepts prepend option", %{form: form} do
+      expected =
+        ~s(<div class=\"form-group\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<div class=\"input-group\">) <>
+          ~s(<div class=\"input-group-prepend\">) <>
+          ~s(<div class=\"input-group-text\">@</div>) <>
+          ~s(</div>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
+          ~s(</div>) <>
+          ~s(</div>)
+
+      input = form_group(form, :name, prepend: "@")
+      assert safe_to_string(input) == expected
+    end
+
+    test "accepts append option", %{form: form} do
+      expected =
+        ~s(<div class=\"form-group\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<div class=\"input-group\">) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
+          ~s(<div class=\"input-group-append\">) <>
+          ~s(<div class=\"input-group-text\">@</div>) <>
+          ~s(</div>) <>
+          ~s(</div>) <>
+          ~s(</div>)
+
+      input = form_group(form, :name, append: "@")
+      assert safe_to_string(input) == expected
+    end
+
+    test "accepts prepend and append options", %{form: form} do
+      expected =
+        ~s(<div class=\"form-group\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<div class=\"input-group\">) <>
+          ~s(<div class=\"input-group-prepend\">) <>
+          ~s(<div class=\"input-group-text\">@</div>) <>
+          ~s(</div>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
+          ~s(<div class=\"input-group-append\">) <>
+          ~s(<div class=\"input-group-text\">@</div>) <>
+          ~s(</div>) <>
+          ~s(</div>) <>
+          ~s(</div>)
+
+      input = form_group(form, :name, prepend: "@", append: "@")
+      assert safe_to_string(input) == expected
+    end
   end
 
   describe "help" do

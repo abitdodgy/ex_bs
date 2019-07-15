@@ -84,12 +84,17 @@ defmodule BsForm do
 
   For example: `text_input`.
 
+  Use the `prepend` and `append` options to preppend of append text to an input.
+
   ### Examples
 
   Generates a form group with a custom input type.
 
       iex> input(f, :age, type: :text_input)
       "<div class=\"form-group\"><label for=\"user_age\">Age</label><input class=\"form-control \" id=\"user_age\" name=\"user[age]\" type=\"text\"></div>"
+      
+      iex> input(f, :age, prepend: "Years")
+      "<div class=\"form-group\"><label for=\"user_age\">Age</label><div class=\"input-group\"><div class=\"input-group-prepend\"><div class=\"input-group-text\">Years</div></div><input class=\"form-control \" id=\"user_age\" name=\"user[age]\" type=\"number\"></div></div>"
 
   ## Errors
 
@@ -136,16 +141,16 @@ defmodule BsForm do
   def form_group(form, field, opts \\ []) do
     io_data =
       %{form: form, field: field, opts: opts, safe: []}
-      |> put_hints()
-      |> put_error()
-      |> put_input()
-      |> put_label()
+      |> help()
+      |> error()
+      |> input_or_group()
+      |> label()
       |> Map.get(:safe)
 
-    Tag.content_tag(:div, io_data, [class: css_class(:form_group)])
+    Tag.content_tag(:div, io_data, class: css_class(:form_group))
   end
 
-  defp put_label(%{form: form, field: field, opts: opts, safe: safe} = data) do
+  defp label(%{form: form, field: field, opts: opts, safe: safe} = data) do
     label =
       opts
       |> Keyword.get(:label)
@@ -202,19 +207,59 @@ defmodule BsForm do
     Tag.content_tag(:span, [" ", mark], class: css_class(:required_field_mark))
   end
 
-  defp put_input(%{form: form, field: field, opts: opts, safe: safe} = data) do
+  def input_or_group(%{opts: opts, safe: safe} = data) do
+    io_data =
+      case {Keyword.get(opts, :append), Keyword.get(opts, :prepend)} do
+        {nil, nil} ->
+          input(data)
+
+        {append, nil} when not is_nil(append) ->
+          input_group do
+            [input(data), input_group_append(append)]
+          end
+
+        {nil, prepend} when not is_nil(prepend) ->
+          input_group do
+            [input_group_prepend(prepend), input(data)]
+          end
+
+        {append, prepend} ->
+          input_group do
+            [input_group_prepend(prepend), input(data), input_group_append(append)]
+          end
+      end
+
+    Map.put(data, :safe, [io_data | safe])
+  end
+
+  defp input_group(do: block) do
+    Tag.content_tag(:div, block, class: css_class(:input_group))
+  end
+
+  defp input_group_append(text) do
+    Tag.content_tag :div, class: css_class(:input_group_append) do
+      Tag.content_tag(:div, text, class: css_class(:input_group_text))
+    end
+  end
+
+  defp input_group_prepend(text) do
+    Tag.content_tag :div, class: css_class(:input_group_prepend) do
+      Tag.content_tag(:div, text, class: css_class(:input_group_text))
+    end
+  end
+
+  defp input(%{form: form, field: field, opts: opts}) do
     type = Keyword.get(opts, :type, Form.input_type(form, field))
 
     opts =
       [class: css_class(:input)]
       |> Keyword.merge(opts)
-      |> Keyword.drop([:label, :help, :type])
+      |> Keyword.drop([:label, :help, :type, :append, :prepend])
       |> Keyword.update!(:class, fn current_value ->
         ~s(#{current_value} #{input_state_class(form, field)})
       end)
 
-    input = apply(Form, type, [form, field, opts])
-    Map.put(data, :safe, [input | safe])
+    apply(Form, type, [form, field, opts])
   end
 
   defp input_state_class(form, field) do
@@ -230,7 +275,7 @@ defmodule BsForm do
     end
   end
 
-  defp put_error(%{form: form, field: field, safe: safe} = data) do
+  defp error(%{form: form, field: field, safe: safe} = data) do
     errors =
       Enum.map(Keyword.get_values(form.errors, field), fn {msg, _opts} ->
         Tag.content_tag(:div, translation_fn().(msg), class: css_class(:error_message))
@@ -239,7 +284,7 @@ defmodule BsForm do
     Map.put(data, :safe, [errors | safe])
   end
 
-  defp put_hints(%{opts: opts, safe: safe} = data) do
+  defp help(%{opts: opts, safe: safe} = data) do
     help =
       opts
       |> Keyword.get(:help)
@@ -283,8 +328,12 @@ defmodule BsForm do
     form_text: "form-text text-muted",
     form_group: "form-group",
     input: "form-control",
+    input_group: "input-group",
+    input_group_append: "input-group-append",
+    input_group_prepend: "input-group-prepend",
+    input_group_text: "input-group-text",
     input_state_valid: "is-valid",
-    input_state_invalid: "is-invalid",
+    input_state_invalid: "is-invalid"
   }
 
   defp css_class(key) do
