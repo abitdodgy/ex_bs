@@ -34,7 +34,13 @@ defmodule ExBs.Alert do
     end
   end)
 
-  defp alert(type, opts, do: block) when is_list(opts) do
+  def alert(type, text), do: alert(type, text, [])
+
+  def alert(type, text, opts) when is_binary(text) do
+    alert(type, opts, do: text)
+  end
+
+  def alert(type, opts, do: block) when is_list(opts) do
     {dismissable, opts} = Keyword.pop(opts, :dismissable, true)
 
     {_, opts} =

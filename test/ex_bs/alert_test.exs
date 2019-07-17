@@ -28,7 +28,25 @@ defmodule ExBs.AlertTest do
       ~s(</button>)
   end
 
-  describe "alert_*" do
+  describe "alert" do
+    test "renders alert component with the given type" do
+      expected =
+        ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!#{close_button()}</div>)
+
+      alert = Alert.alert(:alert_success, "Alert!")
+      assert safe_to_string(alert) == expected
+    end
+
+    test "accepts a list of options" do
+      expected =
+        ~s(<div class=\"alert alert-success foo\" role=\"alert\">Alert!#{close_button()}</div>)
+
+      alert = Alert.alert(:alert_success, "Alert!", class: "foo")
+      assert safe_to_string(alert) == expected
+    end
+  end
+
+  describe "alert_state" do
     test "generates a success alert" do
       expected =
         ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!#{close_button()}</div>)
