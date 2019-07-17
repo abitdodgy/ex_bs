@@ -1,6 +1,6 @@
 defmodule ExBs.Form do
   @moduledoc """
-  Helpers for building Phoenix forms in using Bootstrap components.
+  Helpers for building Phoenix forms with Bootstrap components.
 
   """
   import ExBs.Config
@@ -8,7 +8,7 @@ defmodule ExBs.Form do
   alias Phoenix.HTML.{Form, Tag}
 
   @doc """
-  Builds a Boostrap 4 form group with a label, input, an errors and help text tags.
+  Builds a Boostrap 4 form group with a label, input, an errors and help text components.
 
   ## Label
 
@@ -170,16 +170,14 @@ defmodule ExBs.Form do
   end
 
   @doc """
-  Creates an HTML input tag. The type is inflect. The input type is inflected.
-  Use the `type` option to customise the input type.
+  Creates an HTML input tag. The input type is inflected. Use the `type`
+  option to customise the input type.
 
   Input types must correspond to Phoenix.HTML.Form input functions.
 
   Accepts a keyword list of attributes that is forwarded onto the html.
 
   ## Examples
-
-  Generates a form group with a custom input type.
 
       input(f, :age)
       #=> <input class="form-control " id="user_age" name="user[age]" type="number">
@@ -203,7 +201,7 @@ defmodule ExBs.Form do
   end
 
   @doc """
-  Creates a help text tag. Accepts a keyword list of attributes
+  Creates a help text component. Accepts a keyword list of attributes
   that is forwarded onto the html.
 
   ## Examples
@@ -223,14 +221,20 @@ defmodule ExBs.Form do
   end
 
   @doc """
-  Creates an input group element.
+  Creates an input group component. Accepts a keyword list of attributes
+  that is forwarded onto the html.
+
+  Use the `prepend` and `append` options to create group prepend and
+  append components.
 
   ## Examples
 
       input_group do
-        "Foo"
+        input(f, :age)
       end
-      #=> <div class="input-group">Foo</div>
+      #=> <div class="input-group">
+            <input class="form-control " id="user_age" name="user[age]" type="number">
+          </div>
 
       input_group prepend: "@" do
         "Foo"
@@ -306,10 +310,6 @@ defmodule ExBs.Form do
     end
   end
 
-  # 
-  # Private * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-  # 
-
   defp draw_label(%{form: form, field: field, opts: opts, safe: safe} = data) do
     case Keyword.get(opts, :label) do
       false ->
@@ -341,12 +341,14 @@ defmodule ExBs.Form do
   end
 
   defp label_text(form, field, label) do
-    if required_field?(form, field) and required_field_mark() do
-      [translation_fn().(label), required_label_marker()]
+    if required_field?(form, field) and mark_required_fields?() do
+      [translation_fn().(label), draw_required_field_marker()]
     else
       label
     end
   end
+
+  defp mark_required_fields?, do: !!required_field_marker()
 
   defp required_field?(form, field) do
     form
@@ -354,16 +356,16 @@ defmodule ExBs.Form do
     |> Keyword.get(:required)
   end
 
-  defp required_field_mark do
-    config(:required_field_mark, "*")
+  defp required_field_marker do
+    config(:required_field_marker, "*")
   end
 
-  defp required_label_marker() do
+  defp draw_required_field_marker do
     mark =
-      required_field_mark()
+      required_field_marker()
       |> translation_fn().()
 
-    Tag.content_tag(:span, [" ", mark], class: css_class(:required_field_mark))
+    Tag.content_tag(:span, [" ", mark], class: css_class(:required_field_marker))
   end
 
   defp input_or_group_with_errors(%{form: form, field: field, opts: opts, safe: safe} = data) do

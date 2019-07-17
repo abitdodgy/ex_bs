@@ -44,6 +44,8 @@ defmodule ExBs.Config do
   end
 
   @bootstrap_classes %{
+    alert_success: "alert alert-success",
+    alert_primary: "alert alert-primary",
     error_message: "invalid-feedback",
     form_text: "form-text text-muted",
     form_group: "form-group",
