@@ -46,6 +46,16 @@ defmodule ExBs.Config do
   @bootstrap_classes %{
     alert_success: "alert alert-success",
     alert_primary: "alert alert-primary",
+    badge: %{
+        primary: "badge badge-primary",
+        secondary: "badge badge-secondary",
+        success: "badge badge-success",
+        danger: "badge badge-danger",
+        warning: "badge badge-warning",
+        info: "badge badge-info",
+        light: "badge badge-light",
+        dark: "badge badge-dark"
+      },
     error_message: "invalid-feedback",
     form_text: "form-text text-muted",
     form_group: "form-group",
