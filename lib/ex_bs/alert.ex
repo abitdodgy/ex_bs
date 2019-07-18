@@ -3,34 +3,23 @@ defmodule ExBs.Alert do
   Helpers for building Bootstrap alerts.
 
   """
-  import ExBs.Config
-
   alias Phoenix.HTML.Tag
 
-  @alerts ~w[
-    alert_primary
-    alert_secondary
-    alert_success
-    alert_danger
-    alert_warning
-    alert_info
-    alert_light
-    alert_dark
-  ]a
+  @alert_types ExBs.Config.bootstrap(:alert_types)
 
-  Enum.each(@alerts, fn alert ->
-    def unquote(alert)(text) when is_binary(text) do
-      alert(unquote(alert), [], do: text)
+  Enum.each(@alert_types, fn {type, _class} ->
+    def unquote(type)(text) when is_binary(text) do
+      alert(unquote(type), [], do: text)
     end
 
-    def unquote(alert)(do: block), do: alert(unquote(alert), [], do: block)
+    def unquote(type)(do: block), do: alert(unquote(type), [], do: block)
 
-    def unquote(alert)(text, opts) when is_binary(text) do
-      alert(unquote(alert), opts, do: text)
+    def unquote(type)(text, opts) when is_binary(text) do
+      alert(unquote(type), opts, do: text)
     end
 
-    def unquote(alert)(opts, do: block) do
-      alert(unquote(alert), opts, do: block)
+    def unquote(type)(opts, do: block) do
+      alert(unquote(type), opts, do: block)
     end
   end)
 
@@ -47,7 +36,7 @@ defmodule ExBs.Alert do
       [role: "alert"]
       |> Keyword.merge(opts)
       |> Keyword.get_and_update(:class, fn current_value ->
-        {nil, ~s(#{css_class(type)} #{current_value})}
+        {nil, ~s(#{class_for(type)} #{current_value})}
       end)
 
     Tag.content_tag :div, opts do
@@ -59,8 +48,12 @@ defmodule ExBs.Alert do
     end
   end
 
+  defp class_for(key), do: @alert_types[key]
+
   defp close_button do
-    Tag.content_tag :button, class: "close", data: [dismiss: "alert"], aria: [label: "Close"] do
+    default_opts = [class: "close", data: [dismiss: "alert"], aria: [label: "Close"]]
+
+    Tag.content_tag :button, default_opts do
       Tag.content_tag(:span, "&times;")
     end
   end

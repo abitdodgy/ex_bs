@@ -5,20 +5,20 @@ defmodule ExBs.AlertTest do
 
   alias ExBs.Alert
 
-  @alerts ~w[
-    alert_primary
-    alert_secondary
-    alert_success
-    alert_danger
-    alert_warning
-    alert_info
-    alert_light
-    alert_dark
+  @alert_types ~w[
+    primary
+    secondary
+    success
+    danger
+    warning
+    info
+    light
+    dark
   ]a
 
-  test "defines bootstrap alert types" do
-    Enum.each(@alerts, fn alert ->
-      assert apply(Alert, alert, ["Alert!"])
+  test "defines functions to generate an alert component for each type" do
+    Enum.each(@alert_types, fn type ->
+      assert apply(Alert, type, ["Alert!"])
     end)
   end
 
@@ -29,11 +29,11 @@ defmodule ExBs.AlertTest do
   end
 
   describe "alert" do
-    test "renders alert component with the given type" do
+    test "renders alert component for the given type" do
       expected =
         ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!#{close_button()}</div>)
 
-      alert = Alert.alert(:alert_success, "Alert!")
+      alert = Alert.alert(:success, "Alert!")
       assert safe_to_string(alert) == expected
     end
 
@@ -41,7 +41,7 @@ defmodule ExBs.AlertTest do
       expected =
         ~s(<div class=\"alert alert-success foo\" role=\"alert\">Alert!#{close_button()}</div>)
 
-      alert = Alert.alert(:alert_success, "Alert!", class: "foo")
+      alert = Alert.alert(:success, "Alert!", class: "foo")
       assert safe_to_string(alert) == expected
     end
   end
@@ -51,7 +51,7 @@ defmodule ExBs.AlertTest do
       expected =
         ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!#{close_button()}</div>)
 
-      alert = Alert.alert_success("Alert!")
+      alert = Alert.success("Alert!")
 
       assert safe_to_string(alert) == expected
     end
@@ -60,7 +60,7 @@ defmodule ExBs.AlertTest do
       expected =
         ~s(<div class=\"alert alert-success foo\" role=\"alert\">Alert!#{close_button()}</div>)
 
-      alert = Alert.alert_success("Alert!", class: "foo")
+      alert = Alert.success("Alert!", class: "foo")
 
       assert safe_to_string(alert) == expected
     end
@@ -70,7 +70,7 @@ defmodule ExBs.AlertTest do
         ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!#{close_button()}</div>)
 
       alert =
-        Alert.alert_success do
+        Alert.success do
           "Alert!"
         end
 
@@ -82,7 +82,7 @@ defmodule ExBs.AlertTest do
         ~s(<div class=\"alert alert-success foo\" role=\"alert\">Alert!#{close_button()}</div>)
 
       alert =
-        Alert.alert_success class: "foo" do
+        Alert.success class: "foo" do
           "Alert!"
         end
 
@@ -90,12 +90,11 @@ defmodule ExBs.AlertTest do
     end
 
     test "does not render close button if option is set to false" do
-      expected =
-        ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!</div>)
+      expected = ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!</div>)
 
-      alert = Alert.alert_success("Alert!", dismissable: false)
+      alert = Alert.success("Alert!", dismissable: false)
 
-      assert safe_to_string(alert) == expected      
+      assert safe_to_string(alert) == expected
     end
   end
 end

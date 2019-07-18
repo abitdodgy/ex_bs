@@ -44,18 +44,26 @@ defmodule ExBs.Config do
   end
 
   @bootstrap_classes %{
-    alert_success: "alert alert-success",
-    alert_primary: "alert alert-primary",
-    badge: %{
-        primary: "badge badge-primary",
-        secondary: "badge badge-secondary",
-        success: "badge badge-success",
-        danger: "badge badge-danger",
-        warning: "badge badge-warning",
-        info: "badge badge-info",
-        light: "badge badge-light",
-        dark: "badge badge-dark"
-      },
+    alert_types: %{
+      primary: "alert alert-primary",
+      secondary: "alert alert-secondary",
+      success: "alert alert-success",
+      danger: "alert alert-danger",
+      warning: "alert alert-warning",
+      info: "alert alert-info",
+      light: "alert alert-light",
+      dark: "alert alert-dark"
+    },
+    badge_types: %{
+      primary: "badge badge-primary",
+      secondary: "badge badge-secondary",
+      success: "badge badge-success",
+      danger: "badge badge-danger",
+      warning: "badge badge-warning",
+      info: "badge badge-info",
+      light: "badge badge-light",
+      dark: "badge badge-dark"
+    },
     error_message: "invalid-feedback",
     form_text: "form-text text-muted",
     form_group: "form-group",
@@ -67,6 +75,10 @@ defmodule ExBs.Config do
     input_state_valid: "is-valid",
     input_state_invalid: "is-invalid"
   }
+
+  def bootstrap(key) do
+    Application.get_env(:ex_bs, :bootstrap)[key] || @bootstrap_classes[key]
+  end
 
   @doc """
   Returns a CSS class from config for the given key. Defaults to Bootstrap

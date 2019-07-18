@@ -3,13 +3,11 @@ defmodule ExBs.Badge do
   Helpers for building Bootstrap badges.
 
   """
-  import ExBs.Config
-
   alias Phoenix.HTML.Tag
 
-  @badge_types Map.keys(css_class(:badge))
+  @badge_types ExBs.Config.bootstrap(:badge_types)
 
-  Enum.each(@badge_types, fn type ->
+  Enum.each(@badge_types, fn {type, _class} ->
     def unquote(type)(text, opts \\ []) do
       badge(unquote(type), text, opts)
     end
@@ -25,5 +23,5 @@ defmodule ExBs.Badge do
     Tag.content_tag(:div, text, opts)
   end
 
-  defp class_for(key), do: css_class(:badge)[key]
+  defp class_for(key), do: @badge_types[key]
 end
