@@ -64,6 +64,9 @@ defmodule ExBs.Config do
       light: "badge badge-light",
       dark: "badge badge-dark"
     },
+    badge_shapes: %{
+      pill: "badge-pill"
+    },
     error_message: "invalid-feedback",
     form_text: "form-text text-muted",
     form_group: "form-group",
