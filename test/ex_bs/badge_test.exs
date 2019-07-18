@@ -24,7 +24,7 @@ defmodule ExBs.BadgeTest do
 
   describe "badge" do
     test "renders badge component with the given type" do
-      expected = ~s(<div class=\"badge badge-success \">Success!</div>)
+      expected = ~s(<div class=\"badge badge-success\">Success!</div>)
 
       badge = Badge.badge(:success, "Success!")
       assert safe_to_string(badge) == expected
@@ -36,11 +36,18 @@ defmodule ExBs.BadgeTest do
       badge = Badge.badge(:success, "Success!", class: "foo")
       assert safe_to_string(badge) == expected
     end
+
+    test "accepts a pill option" do
+      expected = ~s(<div class=\"badge badge-success badge-pill\">Success!</div>)
+
+      badge = Badge.badge(:success, "Success!", shape: :pill)
+      assert safe_to_string(badge) == expected
+    end
   end
 
-  describe "badge_state" do
+  describe "badge_[state]" do
     test "generates a success badge component" do
-      expected = ~s(<div class=\"badge badge-success \">Success!</div>)
+      expected = ~s(<div class=\"badge badge-success\">Success!</div>)
 
       badge = Badge.success("Success!")
 

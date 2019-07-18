@@ -31,7 +31,7 @@ defmodule ExBs.AlertTest do
   describe "alert" do
     test "renders alert component for the given type" do
       expected =
-        ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!#{close_button()}</div>)
+        ~s(<div class=\"alert alert-success\" role=\"alert\">Alert!#{close_button()}</div>)
 
       alert = Alert.alert(:success, "Alert!")
       assert safe_to_string(alert) == expected
@@ -49,7 +49,7 @@ defmodule ExBs.AlertTest do
   describe "alert_state" do
     test "generates a success alert" do
       expected =
-        ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!#{close_button()}</div>)
+        ~s(<div class=\"alert alert-success\" role=\"alert\">Alert!#{close_button()}</div>)
 
       alert = Alert.success("Alert!")
 
@@ -67,7 +67,7 @@ defmodule ExBs.AlertTest do
 
     test "accepts a block" do
       expected =
-        ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!#{close_button()}</div>)
+        ~s(<div class=\"alert alert-success\" role=\"alert\">Alert!#{close_button()}</div>)
 
       alert =
         Alert.success do
@@ -90,7 +90,7 @@ defmodule ExBs.AlertTest do
     end
 
     test "does not render close button if option is set to false" do
-      expected = ~s(<div class=\"alert alert-success \" role=\"alert\">Alert!</div>)
+      expected = ~s(<div class=\"alert alert-success\" role=\"alert\">Alert!</div>)
 
       alert = Alert.success("Alert!", dismissable: false)
 

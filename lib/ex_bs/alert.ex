@@ -36,7 +36,13 @@ defmodule ExBs.Alert do
       [role: "alert"]
       |> Keyword.merge(opts)
       |> Keyword.get_and_update(:class, fn current_value ->
-        {nil, ~s(#{class_for(type)} #{current_value})}
+        cond do
+          current_value ->
+            {nil, ~s(#{class_for(type)} #{current_value})}
+
+          true ->
+            {nil, class_for(type)}
+        end
       end)
 
     Tag.content_tag :div, opts do
