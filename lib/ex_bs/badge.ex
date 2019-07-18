@@ -16,7 +16,7 @@ defmodule ExBs.Badge do
 
   Enum.each(@badge_types, fn {type, _class} ->
     @doc """
-    Returns a #{type} badge component. Accepts a list of
+    Generates a #{type} badge component. Accepts a list of
     attributes that is passed onto the html tag.
 
     Use the `shape: :pill` option to create a `badge-pill` component.
@@ -35,9 +35,8 @@ defmodule ExBs.Badge do
     end
   end)
 
-
   @doc """
-  Returns a badge component. Accepts a list of attributes
+  Generates a badge component. Accepts a list of attributes
   that is passed onto the html tag.
 
   Pass an atom as the first argument to set variation.

@@ -7,7 +7,32 @@ defmodule ExBs.Alert do
 
   @alert_types ExBs.Config.bootstrap(:alert_types)
 
+  defp class_for(key), do: @alert_types[key]
+
   Enum.each(@alert_types, fn {type, _class} ->
+    @doc """
+    Generates a #{type} alert component. Accepts a list of
+    attributes that is passed onto the html tag.
+
+    Accepts a block, which is useful for nesting components.
+
+    The alert is dismissable by default. Use `dismissable: false` to
+    generate an alert without a close button.
+
+    ## Examples
+
+        #{type}("Alert!")
+        #=> <div class="alert alert-#{type}">Alert!</div>
+
+        #{type}("Alert!", class: "extra")
+        #=> <div class="alert alert-#{type} extra">Alert!</div>
+
+        #{type} class: "extra" do
+          "Alert!"
+        end
+        #=> <div class="alert alert-#{type} extra">Alert!</div>
+
+    """
     def unquote(type)(text) when is_binary(text) do
       alert(unquote(type), [], do: text)
     end
@@ -23,6 +48,31 @@ defmodule ExBs.Alert do
     end
   end)
 
+  @doc """
+  Generates an alert component. Accepts a list of attributes
+  that is passed onto the html tag.
+
+  Pass an atom as the first argument to set variation.
+
+  Accepts a block, which is useful for nesting components.
+
+  The alert is dismissable by default. Use `dismissable: false` to
+  generate an alert without a close button.
+
+  ## Examples
+
+      alert(:success, "Alert!")
+      #=> <div class="alert alert-success">Alert!</div>
+
+      alert(:success, "Alert!", class: "extra")
+      #=> <div class="alert alert-success extra">Alert!</div>
+
+      alert :success, class: "extra" do
+        "Alert!"
+      end
+      #=> <div class="alert alert-success extra">Alert!</div>
+
+  """
   def alert(type, text), do: alert(type, text, [])
 
   def alert(type, text, opts) when is_binary(text) do
@@ -36,13 +86,10 @@ defmodule ExBs.Alert do
       [role: "alert"]
       |> Keyword.merge(opts)
       |> Keyword.get_and_update(:class, fn current_value ->
-        cond do
-          current_value ->
-            {nil, ~s(#{class_for(type)} #{current_value})}
-
-          true ->
-            {nil, class_for(type)}
-        end
+        {nil,
+         [class_for(type), current_value]
+         |> Enum.reject(&is_nil/1)
+         |> Enum.join(" ")}
       end)
 
     Tag.content_tag :div, opts do
@@ -53,8 +100,6 @@ defmodule ExBs.Alert do
       end
     end
   end
-
-  defp class_for(key), do: @alert_types[key]
 
   defp close_button do
     default_opts = [class: "close", data: [dismiss: "alert"], aria: [label: "Close"]]
