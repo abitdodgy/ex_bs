@@ -5,11 +5,11 @@ defmodule ExBs.Badge do
   """
   alias Phoenix.HTML.Tag
 
-  @badge_types ExBs.Config.bootstrap(:badge_types)
+  @badge_types ExBs.Config.bootstrap(:badge)[:types]
 
   defp type_class(type), do: @badge_types[type]
 
-  @badge_shapes ExBs.Config.bootstrap(:badge_shapes)
+  @badge_shapes ExBs.Config.bootstrap(:badge)[:shapes]
 
   defp shape_class(nil), do: nil
   defp shape_class(shape), do: @badge_shapes[shape]

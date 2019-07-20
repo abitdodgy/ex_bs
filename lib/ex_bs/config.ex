@@ -54,18 +54,20 @@ defmodule ExBs.Config do
       light: "alert alert-light",
       dark: "alert alert-dark"
     },
-    badge_types: %{
-      primary: "badge badge-primary",
-      secondary: "badge badge-secondary",
-      success: "badge badge-success",
-      danger: "badge badge-danger",
-      warning: "badge badge-warning",
-      info: "badge badge-info",
-      light: "badge badge-light",
-      dark: "badge badge-dark"
-    },
-    badge_shapes: %{
-      pill: "badge-pill"
+    badge: %{
+      types: %{
+        primary: "badge badge-primary",
+        secondary: "badge badge-secondary",
+        success: "badge badge-success",
+        danger: "badge badge-danger",
+        warning: "badge badge-warning",
+        info: "badge badge-info",
+        light: "badge badge-light",
+        dark: "badge badge-dark"
+      },
+      shapes: %{
+        pill: "badge-pill"
+      }
     },
     error_message: "invalid-feedback",
     form_text: "form-text text-muted",
