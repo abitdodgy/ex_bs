@@ -19,18 +19,64 @@ defmodule ExBs.Grid do
 
     ## Examples
 
-        col(12)
-        #=> <div class="col-12"></div>
+        col(#{size}) do
+          "Column!"
+        end
+        #=> <div class="col-#{size}">"Column!"</div>
+
+        col #{size}, class: "extra" do
+          "Column!"
+        end
+        #=> <div class="col-#{size} extra">"Column!"</div>
 
     """
-    def col(unquote(size), do: block), do: col("col-#{unquote(size)}", [], do: block)
-    def col(unquote(size), opts, do: block), do: col("col-#{unquote(size)}", opts, do: block)
+    def col(unquote(size), do: block) do
+      col("col-#{unquote(size)}", [], do: block)
+    end
+
+    def col(unquote(size), opts, do: block) do
+      col("col-#{unquote(size)}", opts, do: block)
+    end
   end)
 
+  @doc """
+  Generates a single column component. Accepts a list of attributes that
+  are passed onto the html.
+
+  ## Examples
+
+      col do
+        "Column!"
+      end
+      #=> <div class="col">"Column!"</div>
+
+      col(class: "extra") do
+        "Column!"
+      end
+      #=> <div class="col extra">"Column!"</div>
+
+  """
   def col(do: block), do: col("col", [], do: block)
 
   def col(opts, do: block), do: col("col", opts, do: block)
 
+  @doc """
+  Generates a column component with the given size. Accepts a list
+  of attributes that are passed onto the html.
+
+  ## Examples
+
+      col "col-12" do
+        "Column!"
+      end
+      #=> <div class="col-12">"Column!"</div>
+
+      col "col-12", class: "extra" do
+        "Column!"
+      end
+      #=> <div class="col-12 extra">"Column!"</div>
+
+  """
   def col(size, opts, do: block) do
     {_, opts} =
       Keyword.get_and_update(opts, :class, fn current_value ->
