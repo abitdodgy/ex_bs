@@ -45,6 +45,13 @@ defmodule ExBs.GridTest do
         assert apply(Grid, :col, [break_point, [auto: true], [do: "Col!"]]) |> safe_to_string() == expected
       end)      
     end
+
+    test "accepts other options" do
+      Enum.each(@break_points, fn break_point ->
+        expected = ~s(<div class=\"col-#{break_point}-auto extra\">Col!</div>)
+        assert apply(Grid, :col, [break_point, [auto: true, class: "extra"], [do: "Col!"]]) |> safe_to_string() == expected
+      end)      
+    end
   end
 
   describe "col(n)/1 col(n)/2" do
