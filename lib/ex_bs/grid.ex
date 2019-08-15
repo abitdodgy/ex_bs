@@ -17,12 +17,19 @@ defmodule ExBs.Grid do
     Generates a column component. Accepts a list of attributes that
     are passed onto the html.
 
+    Use the `sm`, `md`, `lg`, `xl` options to define breakpoints.
+
     ## Examples
 
         col(#{size}) do
           "Column!"
         end
         #=> <div class="col-#{size}">"Column!"</div>
+
+        col #{size}, sm: 6 do
+          "Column!"
+        end
+        #=> <div class="col-#{size} col-sm-6">"Column!"</div>
 
         col #{size}, class: "extra" do
           "Column!"
@@ -43,12 +50,19 @@ defmodule ExBs.Grid do
   Generates a single column component. Accepts a list of attributes that
   are passed onto the html.
 
+  Use the `sm`, `md`, `lg`, `xl` options to define breakpoints.
+
   ## Examples
 
       col do
         "Column!"
       end
       #=> <div class="col">"Column!"</div>
+
+      col sm: 6 do
+        "Column!"
+      end
+      #=> <div class="col col-sm-6">"Column!"</div>
 
       col(class: "extra") do
         "Column!"
@@ -66,23 +80,37 @@ defmodule ExBs.Grid do
 
   ## Examples
 
-      col "col-12" do
+      col 12 do
         "Column!"
       end
       #=> <div class="col-12">"Column!"</div>
 
-      col "col-12", class: "extra" do
+      col 12, class: "extra" do
         "Column!"
       end
       #=> <div class="col-12 extra">"Column!"</div>
 
   """
   def col(size, opts, do: block) do
+    break_points = [:sm, :md, :lg, :xl]
+
+    resp_classes =
+      opts
+      |> Keyword.take(break_points)
+      |> Enum.reduce([], fn {size, value}, acc ->
+        ["col-#{size}-#{value}" | acc]
+      end)
+      |> Enum.join(" ")
+
     {_, opts} =
-      Keyword.get_and_update(opts, :class, fn current_value ->
+      opts
+      |> Keyword.drop(break_points)
+      |> Keyword.get_and_update(:class, fn current_value ->
         {nil,
-         [size, current_value]
-         |> Enum.reject(&is_nil/1)
+         [size, resp_classes, current_value]
+         |> Enum.reject(fn class ->
+          is_nil(class) or byte_size(class) < 1
+         end)
          |> Enum.join(" ")}
       end)
 
@@ -162,65 +190,4 @@ defmodule ExBs.Grid do
   defp class_for(key) do
     Application.get_env(:ex_bs, :bootstrap)[:grid] || @css_classes[key]
   end
-
-  # @badge_types ExBs.Config.bootstrap(:badge)[:types]
-
-  # defp type_class(type), do: @badge_types[type]
-
-  # @badge_shapes ExBs.Config.bootstrap(:badge)[:shapes]
-
-  # defp shape_class(nil), do: nil
-  # defp shape_class(shape), do: @badge_shapes[shape]
-
-  # Enum.each(@badge_types, fn {type, _class} ->
-  #   @doc """
-  #   Generates a #{type} badge component. Accepts a list of
-  #   attributes that is passed onto the html tag.
-
-  #   Use the `shape: :pill` option to create a `badge-pill` component.
-
-  #   ## Examples
-
-  #       #{type}("Badge!")
-  #       #=> <div class="badge badge-#{type}">Badge!</div>
-
-  #       #{type}("Badge!", shape: :pill)
-  #       #=> <div class="badge badge-#{type} badge-pill">Badge!</div>
-
-  #   """
-  #   def unquote(type)(text, opts \\ []) do
-  #     badge(unquote(type), text, opts)
-  #   end
-  # end)
-
-  # @doc """
-  # Generates a badge component. Accepts a list of attributes
-  # that is passed onto the html tag.
-
-  # Pass an atom as the first argument to set variation.
-
-  # Use the `shape: :pill` option to create a `badge-pill` component.
-
-  # ## Examples
-
-  #     badge(:success)
-  #     #=> <div class="badge badge-success">Badge!</div>
-
-  #     badge(:success, "Badge!", shape: :pill)
-  #     #=> <div class="badge badge-success badge-pill">Badge!</div>
-
-  # """
-  # def badge(type, text, opts \\ []) do
-  #   {shape, opts} = Keyword.pop(opts, :shape)
-
-  #   {_, opts} =
-  #     Keyword.get_and_update(opts, :class, fn current_value ->
-  #       {nil,
-  #        [type_class(type), shape_class(shape), current_value]
-  #        |> Enum.reject(&is_nil/1)
-  #        |> Enum.join(" ")}
-  #     end)
-
-  #   Tag.content_tag(:div, text, opts)
-  # end
 end

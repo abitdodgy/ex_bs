@@ -35,9 +35,9 @@ defmodule ExBs.GridTest do
     end    
 
     test "accepts a list of opts" do
-      expected = ~s(<div class=\"col extra\">Col!</div>)
+      expected = ~s(<div class=\"col col-sm-6\">Col!</div>)
 
-      col = Grid.col class: "extra" do
+      col = Grid.col sm: 6 do
         "Col!"
       end
 
@@ -47,9 +47,19 @@ defmodule ExBs.GridTest do
 
   describe "col/3" do
     test "creates a col component" do
-      expected = ~s(<div class=\"col-1 extra\">Col!</div>)
+      expected = ~s(<div class=\"col extra\">Col!</div>)
 
-      col = Grid.col "col-1", class: "extra" do
+      col = Grid.col class: "extra" do
+        "Col!"
+      end
+
+      assert safe_to_string(col) == expected
+    end
+
+    test "accepts break point opts" do
+      expected = ~s(<div class=\"col-1 col-xl-12 col-lg-6 col-md-4 col-sm-2\">Col!</div>)
+
+      col = Grid.col 1, sm: 2, md: 4, lg: 6, xl: 12 do
         "Col!"
       end
 
