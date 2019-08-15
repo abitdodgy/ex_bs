@@ -7,6 +7,46 @@ defmodule ExBs.GridTest do
 
   @grid_size 1..12
 
+  @break_points [:sm, :md, :lg, :xl]
+
+  describe "row" do
+    test "generates a row component" do
+      expected = ~s(<div class="row">Row!</div>)
+
+      row = Grid.row do
+        "Row!"
+      end
+
+      assert safe_to_string(row) == expected
+    end
+
+    test "accepts a list of options" do
+      expected = ~s(<div class="row extra">Row!</div>)
+
+      row = Grid.row class: "extra" do
+        "Row!"
+      end
+
+      assert safe_to_string(row) == expected
+    end
+  end
+
+  describe "col(break_point)/1 col(break_point)/2" do
+    test "defines functions to generate a col component per break point" do
+      Enum.each(@break_points, fn break_point ->
+        expected = ~s(<div class=\"col-#{break_point}\">Col!</div>)
+        assert apply(Grid, :col, [break_point, [do: "Col!"]]) |> safe_to_string() == expected
+      end)      
+    end
+
+    test "accepts auto option" do
+      Enum.each(@break_points, fn break_point ->
+        expected = ~s(<div class=\"col-#{break_point}-auto\">Col!</div>)
+        assert apply(Grid, :col, [break_point, [auto: true], [do: "Col!"]]) |> safe_to_string() == expected
+      end)      
+    end
+  end
+
   describe "col(n)/1 col(n)/2" do
     test "defines functions to generate a col component" do
       Enum.each(@grid_size, fn size ->

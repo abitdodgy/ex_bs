@@ -7,8 +7,54 @@ defmodule ExBs.Grid do
 
   @css_classes %{
     container: "container",
-    container_fluid: "container-fluid"
+    container_fluid: "container-fluid",
+    row: "row"
   }
+
+  @break_points [:sm, :md, :lg, :xl]
+
+  Enum.each(@break_points, fn break_point ->
+    @doc """
+    Generates a column component for each break point. Accepts a list
+    of attributes that are passed onto the html.
+
+    Use the `auto` option to define auto widths.
+
+    ## Examples
+
+        col(#{break_point}, auto: true) do
+          "Column!"
+        end
+        #=> <div class="col-#{break_point}-auto">"Column!"</div>
+
+        col #{break_point}, sm: 6 do
+          "Column!"
+        end
+        #=> <div class="col-#{break_point} col-sm-6">"Column!"</div>
+
+        col #{break_point}, class: "extra" do
+          "Column!"
+        end
+        #=> <div class="col-#{break_point} extra">"Column!"</div>
+
+    """
+    def col(unquote(break_point), do: block) do
+      col("col-#{unquote(break_point)}", [], do: block)
+    end
+
+    def col(unquote(break_point), opts, do: block) do
+      {auto, opts} = Keyword.pop(opts, :auto)
+
+      class =
+        if auto do
+          "col-#{unquote(break_point)}-auto"
+        else
+          "col-#{unquote(break_point)}"
+        end
+
+      col(class, opts, do: block)
+    end
+  end)
 
   @grid_size 1..12
 
@@ -118,6 +164,34 @@ defmodule ExBs.Grid do
   end
 
   @doc """
+  Generates a row component. Accepts a list of attributes
+  that is forwarded onto the html.
+  
+  ## Examples
+
+      row do
+        col(2)
+      end
+      #=> <div class="row">
+            <div class="col-2"></div>
+          </div>
+
+  """
+  def row(do: block), do: row([], do: block)
+
+  def row(opts, do: block) do
+    {_, opts} =
+      Keyword.get_and_update(opts, :class, fn current_value ->
+        {nil,
+         [class_for(:row), current_value]
+         |> Enum.reject(&is_nil/1)
+         |> Enum.join(" ")}
+      end)
+
+    Tag.content_tag(:div, block, opts)
+  end
+
+  @doc """
   Generates a fluid container component. Accepts a list of attributes
   that is forwarded onto to the html.
 
@@ -128,7 +202,7 @@ defmodule ExBs.Grid do
       end
       #=> <div class="container-fluid">
             <div class="col"></div>
-          </end>
+          </div>
 
       container_fluid class: "extra" do
         col()
