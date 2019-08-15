@@ -155,7 +155,7 @@ defmodule ExBs.Grid do
         {nil,
          [size, resp_classes, current_value]
          |> Enum.reject(fn class ->
-          is_nil(class) or byte_size(class) < 1
+           is_nil(class) or byte_size(class) < 1
          end)
          |> Enum.join(" ")}
       end)
@@ -166,7 +166,7 @@ defmodule ExBs.Grid do
   @doc """
   Generates a row component. Accepts a list of attributes
   that is forwarded onto the html.
-  
+
   ## Examples
 
       row do
