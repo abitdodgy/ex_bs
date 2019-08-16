@@ -148,7 +148,7 @@ defmodule ExBs.Grid do
 
     {_, opts} =
       opts
-      |> Keyword.drop(break_points)
+      |> Keyword.drop(@break_points)
       |> Keyword.get_and_update(:class, fn current_value ->
         {nil,
          [size, resp_classes, current_value]
