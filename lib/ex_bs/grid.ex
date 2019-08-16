@@ -1,6 +1,6 @@
 defmodule ExBs.Grid do
   @moduledoc """
-  Helpers for building Bootstrap badges.
+  Helpers for building Bootstrap layout components.
 
   """
   alias Phoenix.HTML.Tag
@@ -138,11 +138,9 @@ defmodule ExBs.Grid do
 
   """
   def col(size, opts, do: block) do
-    break_points = [:sm, :md, :lg, :xl]
-
     resp_classes =
       opts
-      |> Keyword.take(break_points)
+      |> Keyword.take(@break_points)
       |> Enum.reduce([], fn {size, value}, acc ->
         ["col-#{size}-#{value}" | acc]
       end)
@@ -173,6 +171,13 @@ defmodule ExBs.Grid do
         col(2)
       end
       #=> <div class="row">
+            <div class="col-2"></div>
+          </div>
+
+      row class: "extra" do
+        col(2)
+      end
+      #=> <div class="row extra">
             <div class="col-2"></div>
           </div>
 
