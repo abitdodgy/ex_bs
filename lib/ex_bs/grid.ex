@@ -5,11 +5,7 @@ defmodule ExBs.Grid do
   """
   alias Phoenix.HTML.Tag
 
-  @css_classes %{
-    container: "container",
-    container_fluid: "container-fluid",
-    row: "row"
-  }
+  @grid_size 1..12
 
   @break_points [:sm, :md, :lg, :xl]
 
@@ -55,8 +51,6 @@ defmodule ExBs.Grid do
       col(class, opts, do: block)
     end
   end)
-
-  @grid_size 1..12
 
   Enum.each(@grid_size, fn size ->
     @doc """
@@ -255,6 +249,12 @@ defmodule ExBs.Grid do
 
     Tag.content_tag(:div, block, opts)
   end
+
+  @css_classes %{
+    container: "container",
+    container_fluid: "container-fluid",
+    row: "row"
+  }
 
   defp class_for(key) do
     Application.get_env(:ex_bs, :bootstrap)[:grid] || @css_classes[key]
