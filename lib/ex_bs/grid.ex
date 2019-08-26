@@ -5,11 +5,7 @@ defmodule ExBs.Grid do
   """
   alias Phoenix.HTML.Tag
 
-  @css_classes %{
-    container: "container",
-    container_fluid: "container-fluid",
-    row: "row"
-  }
+  @grid_size 1..12
 
   @break_points [:sm, :md, :lg, :xl]
 
@@ -55,8 +51,6 @@ defmodule ExBs.Grid do
       col(class, opts, do: block)
     end
   end)
-
-  @grid_size 1..12
 
   Enum.each(@grid_size, fn size ->
     @doc """
@@ -182,19 +176,9 @@ defmodule ExBs.Grid do
           </div>
 
   """
-  def row(do: block), do: row([], do: block)
+  def row(do: block), do: content_tag(:row, [], do: block)
 
-  def row(opts, do: block) do
-    {_, opts} =
-      Keyword.get_and_update(opts, :class, fn current_value ->
-        {nil,
-         [class_for(:row), current_value]
-         |> Enum.reject(&is_nil/1)
-         |> Enum.join(" ")}
-      end)
-
-    Tag.content_tag(:div, block, opts)
-  end
+  def row(opts, do: block), do: content_tag(:row, opts, do: block)
 
   @doc """
   Generates a fluid container component. Accepts a list of attributes
@@ -218,11 +202,11 @@ defmodule ExBs.Grid do
 
   """
   def container_fluid(do: block) do
-    container(:container_fluid, [], do: block)
+    content_tag(:container_fluid, [], do: block)
   end
 
   def container_fluid(opts, do: block) do
-    container(:container_fluid, opts, do: block)
+    content_tag(:container_fluid, opts, do: block)
   end
 
   @doc """
@@ -247,14 +231,14 @@ defmodule ExBs.Grid do
 
   """
   def container(do: block) do
-    container(:container, [], do: block)
+    content_tag(:container, [], do: block)
   end
 
   def container(opts, do: block) when is_list(opts) do
-    container(:container, opts, do: block)
+    content_tag(:container, opts, do: block)
   end
 
-  def container(type, opts, do: block) do
+  defp content_tag(type, opts, do: block) do
     {_, opts} =
       Keyword.get_and_update(opts, :class, fn current_value ->
         {nil,
@@ -265,6 +249,12 @@ defmodule ExBs.Grid do
 
     Tag.content_tag(:div, block, opts)
   end
+
+  @css_classes %{
+    container: "container",
+    container_fluid: "container-fluid",
+    row: "row"
+  }
 
   defp class_for(key) do
     Application.get_env(:ex_bs, :bootstrap)[:grid] || @css_classes[key]
