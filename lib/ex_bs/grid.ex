@@ -198,7 +198,7 @@ defmodule ExBs.Grid do
       end
       #=> <div class="container-fluid extra">
             <div class="col"></div>
-          </end>
+          </div>
 
   """
   def container_fluid(do: block) do
@@ -220,14 +220,14 @@ defmodule ExBs.Grid do
       end
       #=> <div class="container">
             <div class="col"></div>
-          </end>
+          </div>
 
       container class: "extra" do
         col()
       end
       #=> <div class="container extra">
             <div class="col"></div>
-          </end>
+          </div>
 
   """
   def container(do: block) do
