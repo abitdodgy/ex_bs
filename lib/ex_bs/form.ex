@@ -343,7 +343,7 @@ defmodule ExBs.Form do
   end
 
   defp label_text(form, field, label) do
-    if required_field?(form, field) and mark_required_fields?() do
+    if !!required_field?(form, field) and mark_required_fields?() do
       [translation_fn().(label), draw_required_field_marker()]
     else
       label
@@ -384,7 +384,7 @@ defmodule ExBs.Form do
 
   defp input_state_class(form, field) do
     cond do
-      !form.source.action ->
+      not Map.has_key?(form.source, :action) or !form.source.action ->
         ""
 
       form.errors[field] ->
