@@ -10,26 +10,50 @@ defmodule ExBs.Form do
   @doc """
   Builds a Boostrap 4 form group with a label, input, an errors and help text components.
 
+  ## Form Group
+
+  The `form_group` option allows forwarding its values to the form_group element tag. It
+  must be a keyword list, accepting `:tag` key to built HTML tag. All other options will
+  be passed to HTML tag like attributes.
+
+  ### Examples
+
+  Generates a default form group.
+
+      form_group(f, :age)
+      #=> <div class="form-group">
+            <label for="user_age">Age</label>
+            <input class="form-control " id="user_age" name="user[age]" type="number">
+          </div>
+
+  Generates a form group with an additional options.
+
+      form_group(f, :age, form_group: [tag: :span, class: "custom"])
+      #=> <span class="form-group custom">
+            <label for="user_age">Age</label>
+            <input class="form-control " id="user_age" name="user[age]" type="number">
+          </span>
+
   ## Label
 
   The `label` option generates an HTML label for the input. It can be a keyword
   list, a string, `false`, or `nil`. When `nil` or omitted, the label is
   inflected from the field name.
 
-  To generate an input without a label, use `label: false`. To create a label
+  To generate a form_group without a label, use `label: false`. To create a label
   with a custom text, pass in a string.
 
-      * input(form, :name, label: false)
-      * input(form, :name, label: "Custom")
+      * form_group(form, :name, label: false)
+      * form_group(form, :name, label: "Custom")
 
   You can also pass a keyword list of attributes that will be forwarded onto the html.
   The same label rules above apply when using a keyword list except for custom text.
 
-      * input(form, :name, label: [class: "my-class"])
+      * form_group(form, :name, label: [class: "my-class"])
 
   To customise the label text when using a keyword list, use the key `text` with a string.
 
-      * input(form, :name, label: [text: "Custom"])
+      * form_group(form, :name, label: [text: "Custom"])
 
   ## Required Field Marker
 
@@ -48,14 +72,14 @@ defmodule ExBs.Form do
 
   Generates a form group without a label.
 
-      input(f, :age, label: false)
+      form_group(f, :age, label: false)
       #=> <div class="form-group">
             <input class="form-control " id="user_age" name="user[age]" type="number">
           </div>
 
   Generates a form group a default label.
 
-      input(f, :age)
+      form_group(f, :age)
       #=> <div class="form-group">
             <label for="user_age">Age</label>
             <input class="form-control " id="user_age" name="user[age]" type="number">
@@ -63,7 +87,7 @@ defmodule ExBs.Form do
 
   Generates a form group with a custom label.
 
-      input(f, :age, label: "Your age?")
+      form_group(f, :age, label: "Your age?")
       #=> <div class="form-group">
             <label for="user_age">Your age?</label>
             <input class="form-control " id="user_age" name="user[age]" type="number">
@@ -71,7 +95,7 @@ defmodule ExBs.Form do
 
   Generates a form group with a label and additional options.
 
-      input(f, :age, label: [text: "Your age?", class: "custom"])
+      form_group(f, :age, label: [text: "Your age?", class: "custom"])
       #=> <div class="form-group">
             <label class="custom" for="user_age">Your age?</label>
             <input class="form-control " id="user_age" name="user[age]" type="number">
@@ -79,7 +103,7 @@ defmodule ExBs.Form do
 
   Generates a form group with a label for a required field.
 
-      input(f, :name)
+      form_group(f, :name)
       #=> <div class="form-group">
             <label for="user_name">Name<span> *</span></label>
             <input class="form-control " id="user_name" name="user[name]" type="text">
@@ -89,11 +113,13 @@ defmodule ExBs.Form do
 
   See `input/3` for details.
 
+  ## Prepend / Append
+
   Use the `prepend` and `append` options to preppend of append text to an input.
 
   ### Examples
 
-      input(f, :age, prepend: "Years")
+      form_group(f, :age, prepend: "Years")
       #=> <div class="form-group">
             <label for="user_age">Age</label>
             <div class="input-group">
@@ -113,22 +139,22 @@ defmodule ExBs.Form do
   The `help` option builds an HTML tag containing help text. It can be a string
   or a keyword list.
 
-      * input(form, :name, help: "A hint...")
+      * form_group(form, :name, help: "A hint...")
 
   When using a keyword list, pass the help text as a string to the `text` option. Other
   attributes will be forwarded onto the html of the help tag.
 
-      * input(form, :name, help: [text: "A hint...", class: "my-class"])
+      * form_group(form, :name, help: [text: "A hint...", class: "my-class"])
 
   Customise the html tag using the `tag` option.
 
-      * input(form, :name, help: [text: "A hint...", tag: :div])
+      * form_group(form, :name, help: [text: "A hint...", tag: :div])
 
   ### Examples
 
   Generates a form group with a help text.
 
-      input(f, :age, help: "Some help")
+      form_group(f, :age, help: "Some help")
       #=> <div class="form-group">
             <label for="user_age">Age</label>
             <input class="form-control " id="user_age" name="user[age]" type="number">
@@ -137,7 +163,7 @@ defmodule ExBs.Form do
 
   Generates a form group with a help text and additional options.
 
-      input(f, :age, help: [text: "Some help", class: "custom"])
+      form_group(f, :age, help: [text: "Some help", class: "custom"])
       #=> <div class="form-group">
             <label for="user_age">Age</label>
             <input class="form-control " id="user_age" name="user[age]" type="number">
@@ -146,7 +172,7 @@ defmodule ExBs.Form do
 
   Generates a form group with help using a custom html tag.
 
-      input(f, :age, help: [text: "Some help", tag: :div])
+      form_group(f, :age, help: [text: "Some help", tag: :div])
       #=> <div class="form-group">
             <label for="user_age">Age</label>
             <input class="form-control " id="user_age" name="user[age]" type="number">
@@ -159,14 +185,14 @@ defmodule ExBs.Form do
 
   """
   def form_group(form, field, opts \\ []) do
-    io_data =
-      %{form: form, field: field, opts: opts, safe: []}
-      |> draw_help()
-      |> input_or_group_with_errors()
-      |> draw_label()
-      |> Map.get(:safe)
+    {form_group_opts, opts} = Keyword.pop(opts, :form_group, [])
 
-    Tag.content_tag(:div, io_data, class: css_class(:form_group))
+    %{form: form, field: field, opts: opts, safe: []}
+    |> draw_help()
+    |> input_or_group_with_errors()
+    |> draw_label()
+    |> Map.get(:safe)
+    |> draw_form_group(form_group_opts)
   end
 
   @doc """
@@ -184,7 +210,7 @@ defmodule ExBs.Form do
 
       input(f, :age, type: :text_input)
       #=> <input class="form-control " id="user_age" name="user[age]" type="text">
-      
+
   """
   def input(form, field, opts \\ []) do
     {type, opts} = Keyword.pop(opts, :type, Form.input_type(form, field))
@@ -341,7 +367,7 @@ defmodule ExBs.Form do
   end
 
   defp label_text(form, field, label) do
-    if required_field?(form, field) and mark_required_fields?() do
+    if !!required_field?(form, field) and mark_required_fields?() do
       [translation_fn().(label), draw_required_field_marker()]
     else
       label
@@ -382,7 +408,7 @@ defmodule ExBs.Form do
 
   defp input_state_class(form, field) do
     cond do
-      !form.source.action ->
+      not Map.has_key?(form.source, :action) or !form.source.action ->
         ""
 
       form.errors[field] ->
@@ -417,5 +443,21 @@ defmodule ExBs.Form do
       {text, opts} ->
         form_text(text, opts)
     end
+  end
+
+  defp draw_form_group(io_data, opts) do
+    {tag, opts} = Keyword.pop(opts, :tag, :div)
+
+    opts =
+      [class: css_class(:form_group)]
+      |> Keyword.merge(opts, fn
+        :class, current_value, new_value ->
+          "#{current_value} #{new_value}"
+
+        _key, _current_value, new_value ->
+          new_value
+      end)
+
+    Tag.content_tag(tag, io_data, opts)
   end
 end
