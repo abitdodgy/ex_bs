@@ -10,6 +10,30 @@ defmodule ExBs.Form do
   @doc """
   Builds a Boostrap 4 form group with a label, input, an errors and help text components.
 
+  ## Form Group
+
+  The `form_group` option allows forwarding its values to the form_group element tag. It
+  must be a keyword list, accepting `:tag` key to built HTML tag. All other options will
+  be passed to HTML tag like attributes.
+
+  ### Examples
+
+  Generates a default form group.
+
+      form_group(f, :age)
+      #=> <div class="form-group">
+            <label for="user_age">Age</label>
+            <input class="form-control " id="user_age" name="user[age]" type="number">
+          </div>
+
+  Generates a form group with an additional options.
+
+      form_group(f, :age, form_group: [tag: :span, class: "custom"])
+      #=> <span class="form-group custom">
+            <label for="user_age">Age</label>
+            <input class="form-control " id="user_age" name="user[age]" type="number">
+          </span>
+
   ## Label
 
   The `label` option generates an HTML label for the input. It can be a keyword
@@ -161,14 +185,14 @@ defmodule ExBs.Form do
 
   """
   def form_group(form, field, opts \\ []) do
-    io_data =
-      %{form: form, field: field, opts: opts, safe: []}
-      |> draw_help()
-      |> input_or_group_with_errors()
-      |> draw_label()
-      |> Map.get(:safe)
+    {form_group_opts, opts} = Keyword.pop(opts, :form_group, [])
 
-    Tag.content_tag(:div, io_data, class: css_class(:form_group))
+    %{form: form, field: field, opts: opts, safe: []}
+    |> draw_help()
+    |> input_or_group_with_errors()
+    |> draw_label()
+    |> Map.get(:safe)
+    |> draw_form_group(form_group_opts)
   end
 
   @doc """
@@ -419,5 +443,21 @@ defmodule ExBs.Form do
       {text, opts} ->
         form_text(text, opts)
     end
+  end
+
+  defp draw_form_group(io_data, opts) do
+    {tag, opts} = Keyword.pop(opts, :tag, :div)
+
+    opts =
+      [class: css_class(:form_group)]
+      |> Keyword.merge(opts, fn
+        :class, current_value, new_value ->
+          "#{current_value} #{new_value}"
+
+        _key, _current_value, new_value ->
+          new_value
+      end)
+
+    Tag.content_tag(tag, io_data, opts)
   end
 end

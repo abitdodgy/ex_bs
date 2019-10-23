@@ -18,6 +18,17 @@ defmodule ExBs.FormTest do
       {:ok, form: form}
     end
 
+    test "accepts form_group options", %{form: form} do
+      expected =
+        ~s(<span class=\"form-group foo\">) <>
+          ~s(<label for=\"user_name\">Name<span> *</span></label>) <>
+          ~s(<input class=\"form-control \" id=\"user_name\" name=\"user[name]\" type=\"text\">) <>
+          ~s(</span>)
+
+      input = Form.form_group(form, :name, form_group: [tag: :span, class: "foo"])
+      assert safe_to_string(input) == expected
+    end
+
     test "does not create label when label is false", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>
