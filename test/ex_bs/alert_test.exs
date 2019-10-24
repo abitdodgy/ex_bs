@@ -24,7 +24,7 @@ defmodule ExBs.AlertTest do
 
   defp close_button do
     ~s(<button aria-label=\"Close\" class=\"close\" data-dismiss=\"alert\">) <>
-      ~s(<span>&amp;times;</span>) <>
+      ~s(<span>&times;</span>) <>
       ~s(</button>)
   end
 
