@@ -24,7 +24,7 @@ defmodule ExBs.AlertTest do
 
   defp close_button do
     ~s(<button aria-label=\"Close\" class=\"close\" data-dismiss=\"alert\">) <>
-      ~s(<span>&amp;times;</span>) <>
+      ~s(<span>&times;</span>) <>
       ~s(</button>)
   end
 
@@ -34,6 +34,14 @@ defmodule ExBs.AlertTest do
         ~s(<div class=\"alert alert-success\" role=\"alert\">Alert!#{close_button()}</div>)
 
       alert = Alert.alert(:success, "Alert!")
+      assert safe_to_string(alert) == expected
+    end
+
+    test "accepts type as string" do
+      expected =
+        ~s(<div class=\"alert alert-success\" role=\"alert\">Alert!#{close_button()}</div>)
+
+      alert = Alert.alert("success", "Alert!")
       assert safe_to_string(alert) == expected
     end
 
