@@ -25,3 +25,6 @@ ex_bs-*.tar
 /.elixir_ls/
 
 .iex.exs
+
+# Ignore icloud files
+*.icloud
