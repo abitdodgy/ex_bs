@@ -239,6 +239,8 @@ defmodule ExBs.Grid do
   end
 
   defp content_tag(type, opts, do: block) do
+    {tag, opts} = Keyword.pop(opts, :tag, :div)
+
     {_, opts} =
       Keyword.get_and_update(opts, :class, fn current_value ->
         {nil,
@@ -247,7 +249,7 @@ defmodule ExBs.Grid do
          |> Enum.join(" ")}
       end)
 
-    Tag.content_tag(:div, block, opts)
+    Tag.content_tag(tag, block, opts)
   end
 
   @css_classes %{
