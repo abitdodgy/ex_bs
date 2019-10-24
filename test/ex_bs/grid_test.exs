@@ -148,6 +148,17 @@ defmodule ExBs.GridTest do
 
       assert safe_to_string(container) == expected
     end
+
+    test "accepts a custom tag" do
+      expected = ~s(<main class=\"container\">Container!</main>)
+
+      container =
+        Grid.container tag: :main do
+          "Container!"
+        end
+
+      assert safe_to_string(container) == expected
+    end
   end
 
   describe "container_fluid" do
