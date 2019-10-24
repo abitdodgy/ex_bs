@@ -37,6 +37,14 @@ defmodule ExBs.AlertTest do
       assert safe_to_string(alert) == expected
     end
 
+    test "accepts type as string" do
+      expected =
+        ~s(<div class=\"alert alert-success\" role=\"alert\">Alert!#{close_button()}</div>)
+
+      alert = Alert.alert("success", "Alert!")
+      assert safe_to_string(alert) == expected
+    end
+
     test "accepts a list of options" do
       expected =
         ~s(<div class=\"alert alert-success foo\" role=\"alert\">Alert!#{close_button()}</div>)

@@ -73,6 +73,8 @@ defmodule ExBs.Alert do
       #=> <div class="alert alert-success extra">Alert!</div>
 
   """
+  def alert(type, text) when is_binary(type ), do: alert(String.to_atom(type), text, [])
+
   def alert(type, text), do: alert(type, text, [])
 
   def alert(type, text, opts) when is_binary(text) do
@@ -105,7 +107,7 @@ defmodule ExBs.Alert do
     default_opts = [class: "close", data: [dismiss: "alert"], aria: [label: "Close"]]
 
     Tag.content_tag :button, default_opts do
-      Tag.content_tag(:span, "&times;")
+      Tag.content_tag(:span, Phoenix.HTML.raw("&times;"))
     end
   end
 end
