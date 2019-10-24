@@ -205,9 +205,12 @@ defmodule ExBs.Form do
     * Other given options are forwarded to the input tag.
 
   """
-  def form_group(form, field, opts \\ []) do
+  def form_group(form, field), do: form_group(form, field, [], do: nil)
+  def form_group(form, field, do: block), do: form_group(form, field, [], do: block)
+  def form_group(form, field, opts), do: form_group(form, field, opts, do: nil)
+
+  def form_group(form, field, opts, do: do_block) do
     {form_group_opts, opts} = Keyword.pop(opts, :form_group, [])
-    {do_block, opts} = Keyword.pop(opts, :do)
 
     %{form: form, field: field, opts: opts, safe: [], do: do_block}
     |> draw_help()
