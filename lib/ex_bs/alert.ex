@@ -73,7 +73,7 @@ defmodule ExBs.Alert do
       #=> <div class="alert alert-success extra">Alert!</div>
 
   """
-  def alert(type, text) when is_binary(type ), do: alert(String.to_atom(type), text, [])
+  def alert(type, text) when is_binary(type), do: alert(String.to_atom(type), text, [])
 
   def alert(type, text), do: alert(type, text, [])
 

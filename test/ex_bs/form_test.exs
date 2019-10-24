@@ -105,6 +105,29 @@ defmodule ExBs.FormTest do
       assert safe_to_string(input) == expected
     end
 
+    test "accepts custom input component", %{form: form} do
+      expected =
+        ~s(<div class=\"form-group\">) <>
+          ~s(<label for=\"user_age\">Age</label>) <>
+          ~s(<select class="custom-select" id="user_age" name="user[age]">) <>
+          ~s(<option value="16">16</option>) <>
+          ~s(<option value="17">17</option>) <>
+          ~s(<option value="18">18</option>) <>
+          ~s(<option value="19">19</option>) <>
+          ~s(<option value="20">20</option>) <>
+          ~s(<option value="21">21</option>) <>
+          ~s(<option value="22">22</option>) <>
+          ~s(</select>) <>
+          ~s(</div>)
+
+      input =
+        Form.form_group form, :age do
+          Phoenix.HTML.Form.select(form, :age, 16..22, class: "custom-select")
+        end
+
+      assert safe_to_string(input) == expected
+    end
+
     test "accepts custom input class", %{form: form} do
       expected =
         ~s(<div class=\"form-group\">) <>

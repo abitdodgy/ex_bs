@@ -111,7 +111,28 @@ defmodule ExBs.Form do
 
   ## Input
 
-  See `input/3` for details.
+  See `input/3` for details of input builder. To generate a form_group with with a
+  custom input, pass option `:do` with a phoenix component.
+
+  ### Examples
+
+      Generates a form group with custom input.
+
+      form_group f, :age do
+        select f, :age, 16..22, class: "custom-select"
+      end
+      #=> <div class="form-group">
+            <label for="user_age">Age</label>
+            <select class="custom-select" id="user_age" name="user[age]">
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18" selected>18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+            </select>
+          </div>
 
   ## Prepend / Append
 
@@ -186,8 +207,9 @@ defmodule ExBs.Form do
   """
   def form_group(form, field, opts \\ []) do
     {form_group_opts, opts} = Keyword.pop(opts, :form_group, [])
+    {do_block, opts} = Keyword.pop(opts, :do)
 
-    %{form: form, field: field, opts: opts, safe: []}
+    %{form: form, field: field, opts: opts, safe: [], do: do_block}
     |> draw_help()
     |> input_or_group_with_errors()
     |> draw_label()
@@ -394,15 +416,18 @@ defmodule ExBs.Form do
     Tag.content_tag(:span, [" ", mark], class: css_class(:required_field_marker))
   end
 
-  defp input_or_group_with_errors(%{form: form, field: field, opts: opts, safe: safe} = data) do
+  defp input_or_group_with_errors(
+         %{form: form, field: field, opts: opts, safe: safe, do: do_block} = data
+       ) do
+    input = do_block || input(form, field, opts)
+    content = [input | errors(form, field)]
+
     case Keyword.take(opts, [:prepend, :append]) do
       [] ->
-        content = [input(form, field, opts) | errors(form, field)]
         Map.put(data, :safe, [content | safe])
 
       siblings ->
-        block = [input(form, field, opts) | errors(form, field)]
-        Map.put(data, :safe, [input_group(siblings, do: block) | safe])
+        Map.put(data, :safe, [input_group(siblings, do: content) | safe])
     end
   end
 
