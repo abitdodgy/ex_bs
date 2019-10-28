@@ -434,7 +434,7 @@ defmodule ExBs.Form do
     end
   end
 
-  defp input_state_class(form, field) do
+  def input_state_class(form, field) do
     cond do
       not Map.has_key?(form.source, :action) or !form.source.action ->
         ""
