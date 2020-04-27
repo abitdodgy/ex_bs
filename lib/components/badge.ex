@@ -3,11 +3,15 @@ defmodule ExBs.Components.Badge do
 
   import ExComponent
 
-  @badge_variants for(
-                    color <- ExBs.Config.get_config(:theme_colors),
+  @theme_colors ExBs.Config.get_config(:theme_colors)
+
+  @badge_colors for color <- @theme_colors,
                     into: [],
                     do: {color, class: color, prefix: true}
-                  ) ++ [pill: [class: "pill", prefix: true, option: true]]
+
+  @badge_types [pill: [class: "pill", prefix: true, option: true]]
+
+  @badge_variants @badge_types ++ @badge_colors
 
   defcontenttag(:badge, tag: :span, class: "badge", variants: @badge_variants)
 

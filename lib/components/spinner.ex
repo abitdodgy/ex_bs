@@ -3,11 +3,15 @@ defmodule ExBs.Components.Spinner do
 
   import ExComponent
 
+  @spinner_sizes [sm: [class: "sm", prefix: true]]
+
   @theme_colors ExBs.Config.get_config(:theme_colors)
 
-  @spinner_variants [
-                      sm: [class: "sm", prefix: true]
-                    ] ++ for(color <- @theme_colors, into: [], do: {color, class: "text-#{color}", option: true})
+  @spinner_colors for color <- @theme_colors,
+    into: [],
+    do: {color, class: "text-#{color}", option: true}
+
+  @spinner_variants @spinner_sizes ++ @spinner_colors
 
   defcontenttag(:spinner_border,
     tag: :div,

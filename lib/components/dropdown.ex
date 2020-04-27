@@ -3,28 +3,24 @@ defmodule ExBs.Components.Dropdown do
 
   import ExComponent
 
-  @dropdown_variants ExBs.Config.get_config(:dropdown_variants)
+  @dropdown_variants for variant <- ExBs.Config.get_config(:dropdown_variants),
+                         into: [],
+                         do: {variant, class: variant, merge: false}
 
-  defcontenttag(:dropdown,
-    tag: :div,
-    class: "dropdown",
-    variants:
-      for variant <- @dropdown_variants do
-        {variant, class: variant, merge: false}
-      end
-  )
+  defcontenttag(:dropdown, tag: :div, class: "dropdown", variants: @dropdown_variants)
 
-  @dropdown_menu_variants_regular [
+  @dropdown_menu_variants [
     right: [class: "right", prefix: true, option: true]
   ]
 
   @break_points ExBs.Config.get_config(:break_points)
-  @dropdown_menu_variants_responsive for b <- @break_points,
+
+  @dropdown_menu_responsive_variants for b <- @break_points,
                                          a <- [:left, :right],
                                          into: [],
                                          do: {:"#{b}_#{a}", class: "#{b}-#{a}", prefix: true, option: true}
 
-  @dropdown_menu_variants @dropdown_menu_variants_regular ++ @dropdown_menu_variants_responsive
+  @dropdown_menu_variants @dropdown_menu_variants ++ @dropdown_menu_responsive_variants
 
   defcontenttag(:dropdown_menu, tag: :div, class: "dropdown-menu", variants: @dropdown_menu_variants)
 
