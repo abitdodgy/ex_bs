@@ -6,6 +6,33 @@ defmodule ExBs.Layout do
   @break_points ExBs.Config.get_config(:break_points)
   @grid_size ExBs.Config.get_config(:grid_size)
 
+  @doc """
+
+  ### col_break_point_variants
+
+  Used to generate a variant for every grid breakpoint.
+
+      col :sm, "Col!"
+
+  ### col_grid_size_variants
+
+  Used to generate a variant for every grid size.
+
+      col 1, "Col!"
+
+  ### col_options
+
+  Used to generate an `:order` option.
+
+      col 1, "Col!", order: "first"
+
+  ### container_variants
+
+  Used to generate responsive container variants.
+
+      container :sm, "..."
+
+  """
   @col_break_point_variants for break_point <- @break_points ++ [:auto],
                             into: [],
                             do: {break_point, class: break_point, prefix: true, merge: false, option: true}

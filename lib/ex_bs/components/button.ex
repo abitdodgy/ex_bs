@@ -6,6 +6,38 @@ defmodule ExBs.Components.Button do
   @theme_colors ExBs.Config.get_config(:theme_colors)
   @button_sizes ExBs.Config.get_config(:button_sizes)
 
+
+  @doc """
+
+  ### color_variants
+
+  Generates a colour variant and colour option for each theme colour.
+
+      button :success, "Button!"
+      button :lg, "Button!", success: true
+
+  ### outline_variants
+
+  Generates an outline variant for each theme colour.
+
+      button :outline_success, "Button!"
+
+  ### size_variants
+
+  Generates a size variant and size option for each theme button size.
+
+      button :sm, "Button!"
+      button :success, "Button!", sm: true
+
+  ### dropdown_variants
+
+  Generates a dropdown and dropdown_split variants.
+
+      button :dropdown, "Button!"
+      button :dropdown_split, "Button!"
+
+
+  """
   @color_variants for color <- @theme_colors,
                       into: [],
                       do: {color, class: color, prefix: true, option: true}

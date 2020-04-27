@@ -5,6 +5,22 @@ defmodule ExBs.Components.ButtonGroup do
 
   @button_sizes ExBs.Config.get_config(:button_sizes)
 
+  @doc """
+
+  ### size_variants
+
+  Generates a size variant and size option for each theme button size.
+
+      button_group :sm, "Button!"
+      button :success, "Button!", sm: true
+
+  ### type_variants
+
+  Generates a dropdown type variant for each dropdown type. See Dropdown component.
+
+      button_group :dropup, "..."
+
+  """
   @size_variants for size <- @button_sizes,
                      into: [],
                      do: {size, class: "btn-group-#{size}", option: true}
