@@ -31,14 +31,6 @@ defmodule ExBs.Layout.ColTest do
 
       assert_safe(result, expected)
     end
-
-    test "form row" do
-      expected = ~s(<div class="form-row">Form Row!</div>)
-
-      result = Layout.form_row("Form Row!")
-
-      assert_safe(result, expected)
-    end
   end
 
   describe "col" do
