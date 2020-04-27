@@ -3,7 +3,7 @@ defmodule ExBs.Components.Alert do
 
   import ExComponent
 
-  alias ExBs.Utilities.CloseButton
+  alias ExBs.Utilities
 
   @theme_colors ExBs.Config.get_config(:theme_colors)
 
@@ -13,7 +13,7 @@ defmodule ExBs.Components.Alert do
     tag: :div,
     class: "alert",
     role: "alert",
-    prepend: CloseButton.close_button(),
+    prepend: Utilities.close_button(),
     variants: @alert_variants
   )
 

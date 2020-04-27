@@ -2,15 +2,15 @@ defmodule ExBs.Config do
   @moduledoc """
   Bootstrap configuration options.
 
-  + `break_points` - the Bootstrap grid break points.
+  + `break_points` - the grid break points.
 
-  + `grid_size` - the number of columns in a Bootstrap grid.
+  + `grid_size` - the number of grid columns.
 
-  + `theme_colors` - the contextual colors of the Bootstrap theme.
+  + `theme_colors` - the theme's contextual colors.
 
-  + `button_sizes` - the Bootstrap button sizes.
+  + `button_sizes` - available button sizes.
 
-  + `dropdown_variants` - the Bootstrap dropdown variants, used in Button Groups and Dropdowns.
+  + `dropdown_variants` - available dropdown types, used in Button Groups and Dropdowns.
 
   """
 
