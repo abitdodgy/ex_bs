@@ -6,7 +6,7 @@ defmodule ExBs.Components.ListGroup do
   @break_points ExBs.Config.get_config(:break_points)
 
   @doc """
-  
+
   ### list_group_responsive_types
 
   Generates a responsive variant for each theme breakpoint.

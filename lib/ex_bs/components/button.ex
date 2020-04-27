@@ -6,7 +6,6 @@ defmodule ExBs.Components.Button do
   @theme_colors ExBs.Config.get_config(:theme_colors)
   @button_sizes ExBs.Config.get_config(:button_sizes)
 
-
   @doc """
 
   ### color_variants
@@ -38,17 +37,13 @@ defmodule ExBs.Components.Button do
 
 
   """
-  @color_variants for color <- @theme_colors,
+  @theme_variants for variant <- @theme_colors ++ @button_sizes,
                       into: [],
-                      do: {color, class: color, prefix: true, option: true}
+                      do: {variant, class: variant, prefix: true, option: true}
 
   @outline_variants for color <- @theme_colors,
                         into: [],
                         do: {:"outline_#{color}", class: "btn-outline-#{color}"}
-
-  @size_variants for size <- @button_sizes,
-                     into: [],
-                     do: {size, class: size, prefix: true, option: true}
 
   @dropdown_variants [
     dropdown: [
@@ -63,7 +58,7 @@ defmodule ExBs.Components.Button do
     ]
   ]
 
-  @button_variants @color_variants ++ @outline_variants ++ @dropdown_variants ++ @size_variants
+  @button_variants @theme_variants ++ @outline_variants ++ @dropdown_variants
 
   defcontenttag(:button, tag: :button, class: "btn", type: "button", variants: @button_variants)
 end

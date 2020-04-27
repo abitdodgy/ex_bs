@@ -23,7 +23,7 @@ defmodule ExBs.Components.ButtonGroup do
   """
   @size_variants for size <- @button_sizes,
                      into: [],
-                     do: {size, class: "btn-group-#{size}", option: true}
+                     do: {size, class: size, prefix: true, option: true}
 
   @dropdown_variants ExBs.Config.get_config(:dropdown_variants)
 

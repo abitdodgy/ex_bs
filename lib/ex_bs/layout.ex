@@ -34,12 +34,12 @@ defmodule ExBs.Layout do
 
   """
   @col_break_point_variants for break_point <- @break_points ++ [:auto],
-                            into: [],
-                            do: {break_point, class: break_point, prefix: true, merge: false, option: true}
+                                into: [],
+                                do: {break_point, class: break_point, prefix: true, merge: false, option: true}
 
   @col_grid_size_variants for size <- @grid_size,
-                          into: [],
-                          do: {:"#{size}", class: size, prefix: true, merge: false, option: true}
+                              into: [],
+                              do: {:"#{size}", class: size, prefix: true, merge: false, option: true}
 
   @col_variants @col_break_point_variants ++ @col_grid_size_variants
 
