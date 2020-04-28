@@ -69,6 +69,16 @@ defmodule ExBs.Components.FormTest do
     end
   end
 
+  describe "input_group" do
+    test "renders an input group component" do
+      expected = ~s(<div class="input-group">...</div>)
+
+      result = Form.input_group("...")
+
+      assert_safe(result, expected)
+    end
+  end
+
   describe "input_group_prepend" do
     test "renders an input group prepend component" do
       expected = ~s(<div class="input-group-prepend"><div class="input-group-text">...</div></div>)
@@ -87,6 +97,14 @@ defmodule ExBs.Components.FormTest do
 
       assert_safe(result, expected)
     end
+
+    test "with tooltip variant" do
+      expected = ~s(<div class="valid-tooltip">...</div>)
+
+      result = Form.valid_feedback(:tooltip, "...")
+
+      assert_safe(result, expected)
+    end
   end
 
   describe "invalid_feedback" do
@@ -97,5 +115,17 @@ defmodule ExBs.Components.FormTest do
 
       assert_safe(result, expected)
     end
+
+    test "with tooltip variant" do
+      expected = ~s(<div class="invalid-tooltip">...</div>)
+
+      result = Form.invalid_feedback(:tooltip, "...")
+
+      assert_safe(result, expected)
+    end
+  end
+
+  describe "custom control" do
+    test "custom_control"
   end
 end

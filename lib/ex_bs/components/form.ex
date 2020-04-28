@@ -19,7 +19,9 @@ defmodule ExBs.Components.Form do
 
   defcontenttag(:form_text, tag: :small, class: "form-text")
 
-  defcontenttag(:form_check, tag: :div, class: "form-check", variants: [inline: [class: "inline", prefix: true]])
+  defcontenttag(:form_check, tag: :div, class: "form-check", variants: [inline: [class: "inline", prefix: true]], options: [disabled: [class: "disabled"]])
+
+  defcontenttag(:input_group, tag: :div, class: "input-group")
 
   defcontenttag(:input_group_prepend,
     tag: :div,
@@ -27,7 +29,16 @@ defmodule ExBs.Components.Form do
     wrap_content: {:div, class: "input-group-text"}
   )
 
-  defcontenttag(:valid_feedback, tag: :div, class: "valid-feedback")
+  defcontenttag(:valid_feedback, tag: :div, class: "valid-feedback", variants: [tooltip: [class: "valid-tooltip", merge: false]])
 
-  defcontenttag(:invalid_feedback, tag: :div, class: "invalid-feedback")
+  defcontenttag(:invalid_feedback, tag: :div, class: "invalid-feedback", variants: [tooltip: [class: "invalid-tooltip", merge: false]])
+
+  defcontenttag(:custom_control, tag: :div, class: "custom-control",
+    variants: [
+      radio: [class: "custom-radio"],
+      checkbox: [class: "custom-checkbox"],
+      switch: [class: "custom-switch"]
+    ]
+    options: [inline: [class: "inline", prefix: true]]
+  )
 end

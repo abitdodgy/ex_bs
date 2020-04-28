@@ -33,15 +33,11 @@ defmodule ExBs.Layout do
       container :sm, "..."
 
   """
-  @col_break_point_variants for break_point <- @break_points ++ [:auto],
-                                into: [],
-                                do: {break_point, class: break_point, prefix: true, merge: false, option: true}
+  @grid_size Enum.map(@grid_size, &String.to_atom("#{&1}"))
 
-  @col_grid_size_variants for size <- @grid_size,
-                              into: [],
-                              do: {:"#{size}", class: size, prefix: true, merge: false, option: true}
-
-  @col_variants @col_break_point_variants ++ @col_grid_size_variants
+  @col_variants for variant <- @break_points ++ @grid_size ++ [:auto],
+                    into: [],
+                    do: {variant, class: variant, prefix: true, merge: false, option: true}
 
   @col_options [order: [class: "order"]]
 
