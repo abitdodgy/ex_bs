@@ -23,7 +23,8 @@ defmodule ExBs.Components.SpinnerTest do
     end
 
     test "with a color variant" do
-      expected = ~s(<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>)
+      expected =
+        ~s(<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>)
 
       result = Spinner.spinner_border(:primary, "Loading...")
 

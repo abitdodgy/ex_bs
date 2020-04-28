@@ -45,6 +45,7 @@ defmodule ExBs.Components.ButtonGroupTest do
       assert_safe(result, expected)
     end
   end
+
   test "button_toolbar" do
     expected = ~s(<div class="btn-toolbar" role="toolbar">Buttons!</div>)
 
