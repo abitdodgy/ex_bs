@@ -6,7 +6,7 @@ defmodule ExBs.UtilitiesTest do
   alias ExBs.Utilities, as: Utils
 
   describe "close_button" do
-    test "close_button generates a close button" do
+    test "renders a close button" do
       expected =
         ~s(<button aria-label="Close" class="close" data-dismiss="alert"><span aria-hidden="true">&amp;times;</span></button>)
 

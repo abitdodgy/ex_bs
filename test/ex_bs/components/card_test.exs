@@ -4,7 +4,7 @@ defmodule ExBs.Components.CardTest do
 
   alias ExBs.Components.Card
 
-  test "generates a card component" do
+  test "renders a card component" do
     expected = ~s(<div class="card">Content!</div>)
 
     result =
@@ -15,7 +15,7 @@ defmodule ExBs.Components.CardTest do
     assert_safe(result, expected)
   end
 
-  test "generates a card header component" do
+  test "renders a card header component" do
     expected = ~s(<div class="card-header">Content!</div>)
 
     result =
@@ -26,7 +26,7 @@ defmodule ExBs.Components.CardTest do
     assert_safe(result, expected)
   end
 
-  test "generates a card body component" do
+  test "renders a card body component" do
     expected = ~s(<div class="card-body">Content!</div>)
 
     result =
@@ -37,7 +37,7 @@ defmodule ExBs.Components.CardTest do
     assert_safe(result, expected)
   end
 
-  test "generates a card footer component" do
+  test "renders a card footer component" do
     expected = ~s(<div class="card-footer">Content!</div>)
 
     result =
@@ -48,7 +48,7 @@ defmodule ExBs.Components.CardTest do
     assert_safe(result, expected)
   end
 
-  test "generates a card title component" do
+  test "renders a card title component" do
     expected = ~s(<h5 class="card-title">Content!</h5>)
 
     result =
@@ -59,7 +59,7 @@ defmodule ExBs.Components.CardTest do
     assert_safe(result, expected)
   end
 
-  test "generates a card text component" do
+  test "renders a card text component" do
     expected = ~s(<p class="card-text">Content!</p>)
 
     result =
@@ -70,19 +70,21 @@ defmodule ExBs.Components.CardTest do
     assert_safe(result, expected)
   end
 
-  test "generates a card image component" do
-    expected = ~s(<img class="card-img" src="path.jpg">)
+  describe "card_image" do
+    test "renders a card image component" do
+      expected = ~s(<img class="card-img" src="path.jpg">)
 
-    result = Card.card_image("path.jpg")
+      result = Card.card_image("path.jpg")
 
-    assert_safe(result, expected)
-  end
+      assert_safe(result, expected)
+    end
 
-  test "generates a card image component with variant" do
-    expected = ~s(<img class="card-img-top" src="path.jpg">)
+    test "with a variant renders a card image variant" do
+      expected = ~s(<img class="card-img-top" src="path.jpg">)
 
-    result = Card.card_image(:top, "path.jpg")
+      result = Card.card_image(:top, "path.jpg")
 
-    assert_safe(result, expected)
+      assert_safe(result, expected)
+    end
   end
 end

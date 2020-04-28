@@ -54,6 +54,4 @@ defmodule ExBs.Layout do
   defcontenttag(:container, tag: :div, class: "container", variants: @container_variants)
 
   defcontenttag(:row, tag: :div, class: "row")
-
-  defcontenttag(:form_row, tag: :div, class: "form-row")
 end

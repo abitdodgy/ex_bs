@@ -24,7 +24,17 @@ defmodule ExBs.Components.Dropdown do
 
   defcontenttag(:dropdown_menu, tag: :div, class: "dropdown-menu", variants: @dropdown_menu_variants)
 
-  defcontenttag(:dropdown_item, tag: &Phoenix.HTML.Link.link/2, class: "dropdown-item")
+  defcontenttag(:dropdown_item,
+    tag: &Phoenix.HTML.Link.link/2,
+    class: "dropdown-item",
+    variants: [
+      button: [tag: :button, type: "button"]
+    ],
+    options: [
+      active: [class: "active"],
+      disabled: [class: "disabled"]
+    ]
+  )
 
   defcontenttag(:dropdown_header, tag: :h6, class: "dropdown-header")
 

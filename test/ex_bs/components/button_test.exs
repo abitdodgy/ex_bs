@@ -28,7 +28,7 @@ defmodule ExBs.Components.ButtonTest do
     assert_safe(result, expected)
   end
 
-  test "button dropdown using variant and color and size option" do
+  test "button dropdown variant with color and size options" do
     expected =
       ~s(<button aria-expanded="false" aria-haspopup="true" class="btn dropdown-toggle btn-success btn-lg" data-toggle="dropdown" type="button">Dropdown!</button>)
 
@@ -37,7 +37,7 @@ defmodule ExBs.Components.ButtonTest do
     assert_safe(result, expected)
   end
 
-  test "button dropdown using a list of variants and color option" do
+  test "button with a variant list and color option" do
     expected =
       ~s(<button aria-expanded="false" aria-haspopup="true" class="btn dropdown-toggle btn-lg btn-success" data-toggle="dropdown" type="button">Dropdown!</button>)
 

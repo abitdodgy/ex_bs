@@ -12,7 +12,7 @@ defmodule ExBs.Components.BadgeTest do
     assert_safe(result, expected)
   end
 
-  test "badge with pill option" do
+  test "with pill option" do
     expected = ~s(<span class="badge badge-success badge-pill">Badge!</span>)
 
     result = Badge.badge(:success, "Badge!", pill: true)
