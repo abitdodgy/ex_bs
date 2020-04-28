@@ -14,7 +14,7 @@ defmodule ExBs.Layout.ColTest do
       assert_safe(result, expected)
     end
 
-    test "container with variant" do
+    test "with a variant" do
       expected = ~s(<div class="container-fluid">Container!</div>)
 
       result = Layout.container(:fluid, "Container!")
@@ -34,7 +34,7 @@ defmodule ExBs.Layout.ColTest do
   end
 
   describe "col" do
-    test "col" do
+    test "with only content" do
       expected = ~s(<div class="col">Col!</div>)
 
       result = Layout.col("Col!")
@@ -42,7 +42,7 @@ defmodule ExBs.Layout.ColTest do
       assert_safe(result, expected)
     end
 
-    test "col/break_point" do
+    test "with break point variant" do
       expected = ~s(<div class="col-sm">Col!</div>)
 
       result = Layout.col(:sm, "Col!")
@@ -50,7 +50,7 @@ defmodule ExBs.Layout.ColTest do
       assert_safe(result, expected)
     end
 
-    test "col with break point option" do
+    test "with break point option" do
       expected = ~s(<div class="col col-md-6">Col!</div>)
 
       result = Layout.col("Col!", md: 6)
@@ -58,7 +58,7 @@ defmodule ExBs.Layout.ColTest do
       assert_safe(result, expected)
     end
 
-    test "col with variants and with break point option" do
+    test "with variant and with break point option" do
       expected = ~s(<div class="col-auto col-md-6">Col!</div>)
 
       result = Layout.col(:auto, "Col!", md: 6)
@@ -66,7 +66,7 @@ defmodule ExBs.Layout.ColTest do
       assert_safe(result, expected)
     end
 
-    test "col with grid-size" do
+    test "with size variant" do
       expected = ~s(<div class="col-12 col-md-6">Col!</div>)
 
       result = Layout.col(12, "Col!", md: 6)
@@ -74,7 +74,7 @@ defmodule ExBs.Layout.ColTest do
       assert_safe(result, expected)
     end
 
-    test "col with order option" do
+    test "with order option" do
       expected = ~s(<div class="col-6 order-2">Col!</div>)
 
       result = Layout.col(6, "Col!", order: 2)

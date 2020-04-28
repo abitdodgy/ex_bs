@@ -6,7 +6,7 @@ defmodule ExBs.Components.FormTest do
   alias ExBs.Components.Form
 
   describe "form_row" do
-    test "generates a form row component" do
+    test "renders a form row component" do
       expected = ~s(<div class="form-row">...</div>)
 
       result = Form.form_row("...")
@@ -16,7 +16,7 @@ defmodule ExBs.Components.FormTest do
   end
 
   describe "form_group" do
-    test "generates a form group component" do
+    test "renders a form group component" do
       expected = ~s(<div class="form-group">...</div>)
 
       result = Form.form_group("...")
@@ -24,7 +24,7 @@ defmodule ExBs.Components.FormTest do
       assert_safe(result, expected)
     end
 
-    test "accepts a row option" do
+    test "with a row option" do
       expected = ~s(<div class="form-group row">...</div>)
 
       result = Form.form_group("...", row: true)
@@ -32,7 +32,7 @@ defmodule ExBs.Components.FormTest do
       assert_safe(result, expected)
     end
 
-    test "accepts responsive options" do
+    test "with responsive options" do
       expected = ~s(<div class="form-group col-md-6">...</div>)
 
       result = Form.form_group("...", col_md: 6)
@@ -42,7 +42,7 @@ defmodule ExBs.Components.FormTest do
   end
 
   describe "form_text" do
-    test "generates a form text component" do
+    test "renders a form text component" do
       expected = ~s(<small class="form-text">...</small>)
 
       result = Form.form_text("...")
@@ -52,7 +52,7 @@ defmodule ExBs.Components.FormTest do
   end
 
   describe "form_check" do
-    test "generates a form check component" do
+    test "renders a form check component" do
       expected = ~s(<div class="form-check">...</div>)
 
       result = Form.form_check("...")
@@ -60,7 +60,7 @@ defmodule ExBs.Components.FormTest do
       assert_safe(result, expected)
     end
 
-    test "with inline variant" do
+    test "with a variant" do
       expected = ~s(<div class="form-check form-check-inline">...</div>)
 
       result = Form.form_check(:inline, "...")
@@ -70,7 +70,7 @@ defmodule ExBs.Components.FormTest do
   end
 
   describe "input_group_prepend" do
-    test "generates an input group prepend component" do
+    test "renders an input group prepend component" do
       expected = ~s(<div class="input-group-prepend"><div class="input-group-text">...</div></div>)
 
       result = Form.input_group_prepend("...")
@@ -80,7 +80,7 @@ defmodule ExBs.Components.FormTest do
   end
 
   describe "valid_feedback" do
-    test "generates a valid feedback component" do
+    test "renders a valid feedback component" do
       expected = ~s(<div class="valid-feedback">...</div>)
 
       result = Form.valid_feedback("...")
@@ -90,7 +90,7 @@ defmodule ExBs.Components.FormTest do
   end
 
   describe "invalid_feedback" do
-    test "generates an invalid feedback component" do
+    test "renders an invalid feedback component" do
       expected = ~s(<div class="invalid-feedback">...</div>)
 
       result = Form.invalid_feedback("...")

@@ -5,7 +5,7 @@ defmodule ExBs.Components.ListGroupTest do
   alias ExBs.Components.ListGroup
 
   describe "list_group" do
-    test "renders a list group" do
+    test "renders a list group component" do
       expected = ~s(<div class="list-group">List group!</div>)
 
       result =
@@ -16,7 +16,7 @@ defmodule ExBs.Components.ListGroupTest do
       assert_safe(result, expected)
     end
 
-    test "renders a list group with variants" do
+    test "with a variant" do
       expected = ~s(<div class="list-group list-group-flush">List group!</div>)
 
       result =
@@ -29,7 +29,7 @@ defmodule ExBs.Components.ListGroupTest do
   end
 
   describe "list_group_item" do
-    test "renders a list group item" do
+    test "renders a list group item component" do
       expected = ~s(<li class="list-group-item">List group item!</li>)
 
       result = ListGroup.list_group_item("List group item!")
@@ -37,7 +37,7 @@ defmodule ExBs.Components.ListGroupTest do
       assert_safe(result, expected)
     end
 
-    test "renders a list group item with variants" do
+    test "with a variant" do
       expected = ~s(<li class="list-group-item list-group-item-primary">Item!</li>)
 
       result = ListGroup.list_group_item(:primary, "Item!")
@@ -45,7 +45,7 @@ defmodule ExBs.Components.ListGroupTest do
       assert_safe(result, expected)
     end
 
-    test "as a link variant" do
+    test "with :link variant renders a list group item link" do
       expected = ~s(<a class="list-group-item list-group-item-action" href="#">Link!</a>)
 
       result = ListGroup.list_group_item(:link, "Link!", to: "#")
@@ -53,7 +53,7 @@ defmodule ExBs.Components.ListGroupTest do
       assert_safe(result, expected)
     end
 
-    test "as a button variant" do
+    test "with :button variant renders a list group item button" do
       expected = ~s(<button class="list-group-item list-group-item-action" type="button">Button!</button>)
 
       result = ListGroup.list_group_item(:button, "Button!")
@@ -61,7 +61,7 @@ defmodule ExBs.Components.ListGroupTest do
       assert_safe(result, expected)
     end
 
-    test "color variant as option" do
+    test "with a color option" do
       expected = ~s(<li class="list-group-item list-group-item-primary">Item!</li>)
 
       result = ListGroup.list_group_item("Item!", primary: true)
@@ -69,10 +69,10 @@ defmodule ExBs.Components.ListGroupTest do
       assert_safe(result, expected)
     end
 
-    test "active option" do
-      expected = ~s(<li class="list-group-item list-group-item-primary active">Item!</li>)
+    test "with an active option" do
+      expected = ~s(<li class="list-group-item active">Item!</li>)
 
-      result = ListGroup.list_group_item("Item!", primary: true, active: true)
+      result = ListGroup.list_group_item("Item!", active: true)
 
       assert_safe(result, expected)
     end
