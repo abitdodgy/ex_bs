@@ -5,8 +5,8 @@ defmodule ExBs.Components.AlertTest do
   alias ExBs.Components.Alert
 
   defp close_button do
-    ~s(<button aria-label="Close" class="close" data-dismiss="alert">) <>
-      ~s(<span aria-hidden="true">&amp;times;</span>) <>
+    ~s(<button aria-label="Close" class="btn-close" data-dismiss="alert">) <>
+      ~s(<span aria-hidden="true"></span>) <>
       ~s(</button>)
   end
 

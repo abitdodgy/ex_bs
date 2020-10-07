@@ -8,7 +8,7 @@ defmodule ExBs.UtilitiesTest do
   describe "close_button" do
     test "renders a close button" do
       expected =
-        ~s(<button aria-label="Close" class="close" data-dismiss="alert"><span aria-hidden="true">&amp;times;</span></button>)
+        ~s(<button aria-label="Close" class="btn-close" data-dismiss="alert"><span aria-hidden="true">&amp;times;</span></button>)
 
       result = Utils.close_button("&times;")
 

@@ -43,7 +43,7 @@ defmodule ExBs.Components.FormTest do
 
   describe "form_text" do
     test "renders a form text component" do
-      expected = ~s(<small class="form-text">...</small>)
+      expected = ~s(<div class="form-text">...</div>)
 
       result = Form.form_text("...")
 
@@ -125,7 +125,4 @@ defmodule ExBs.Components.FormTest do
     end
   end
 
-  describe "custom control" do
-    test "custom_control"
-  end
 end
