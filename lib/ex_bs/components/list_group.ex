@@ -57,7 +57,7 @@ defmodule ExBs.Components.ListGroup do
 
   @list_group_item_variants @list_group_item_types ++ @list_group_item_colors
 
-  @list_group_item_options [active: [class: "active"], disbaled: [class: "disbaled"]]
+  @list_group_item_options [active: [class: "active"], disabled: [class: "disabled"]]
 
   defcontenttag(:list_group_item,
     class: "list-group-item",

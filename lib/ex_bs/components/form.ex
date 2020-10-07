@@ -17,7 +17,9 @@ defmodule ExBs.Components.Form do
 
   defcontenttag(:form_group, tag: :div, class: "form-group", options: @form_group_options)
 
-  defcontenttag(:form_text, tag: :small, class: "form-text")
+  defcontenttag(:form_label, tag: :label, class: "form-label")
+
+  defcontenttag(:form_text, tag: :div, class: "form-text")
 
   defcontenttag(:form_check, tag: :div, class: "form-check", variants: [inline: [class: "inline", prefix: true]], options: [disabled: [class: "disabled"]])
 
@@ -38,7 +40,8 @@ defmodule ExBs.Components.Form do
       radio: [class: "custom-radio"],
       checkbox: [class: "custom-checkbox"],
       switch: [class: "custom-switch"]
-    ]
+    ],
     options: [inline: [class: "inline", prefix: true]]
   )
+
 end
