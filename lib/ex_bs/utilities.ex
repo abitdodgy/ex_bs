@@ -3,11 +3,11 @@ defmodule ExBs.Utilities do
 
   defcontenttag(:close_button,
     tag: :button,
-    class: "close",
+    class: "btn-close",
     wrap_content: {:span, [aria: [hidden: true]]},
-    data: [dismiss: "alert"],
     aria: [label: "Close"]
   )
 
-  def close_button, do: close_button("&times;")
+  def close_button, do: close_button("", data: [dismiss: "alert"])
+
 end

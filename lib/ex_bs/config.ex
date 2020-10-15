@@ -14,7 +14,7 @@ defmodule ExBs.Config do
 
   """
 
-  @break_points ~w[sm md lg xl]a
+  @break_points ~w[sm md lg xl xxl]a
 
   def get_config(:break_points), do: @break_points
 
